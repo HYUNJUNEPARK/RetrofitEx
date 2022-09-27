@@ -1,6 +1,6 @@
 package com.example.networkretrofit.retrofit
 
-import com.example.networkretrofit.model.Repository
+import com.example.networkretrofit.models.Repository
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.GET
@@ -16,19 +16,32 @@ import retrofit2.http.GET
  명시적으로 성공과 실패가 나눠져 그에 따른 동작 처리할 수 있음
 
  response
- 간략한 코드로 서버로 부터 데이터를 받아 올 수 있음
+ Status Code를 받아서 케이스를 나눠 처리해줄 수 있음
  코루틴이나 RX 자바 등 비동기 실행을 한다면 response 를 사용하는게 더 좋다는 의견이 있음
+ When we use Coroutines or RxJava in the project(which is the best professional practice) to provide asynchronous execution,
+ we don't need enqueue callback. We could just use Response.
+
+I think it is depends on your use-case. By using retrofit2.Response<T>,
+ we can access errorBody()(The raw response body of an unsuccessful response.),
+ code()(HTTP status code.) or headers()(HTTP headers).
+
+
+
 
  Retrofit call 과 Response 차이
  https://jeongupark-study-house.tistory.com/208
+
+
+Call or Response in Retrofit?
+https://stackoverflow.com/questions/64124670/call-or-response-in-retrofit
+
+
 */
 
-interface GitApiService {
+interface GitApi {
     @GET("users/Kotlin/repos")
     fun getUsersCall(): Call<Repository>
 
     @GET("users/Kotlin/repos")
-    fun getUsersResponse(): Response<Repository>
-
-
+    suspend fun getUsersResponse(): Response<Repository>
 }

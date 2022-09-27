@@ -5,8 +5,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.networkretrofit.databinding.ItemRecyclerBinding
-import com.example.networkretrofit.model.Repository
-import com.example.networkretrofit.model.RepositoryItem
+import com.example.networkretrofit.models.Repository
+import com.example.networkretrofit.models.RepositoryItem
 
 class RecyclerViewAdapter : RecyclerView.Adapter<RecyclerViewAdapter.Holder>() {
     var userList: Repository? = null

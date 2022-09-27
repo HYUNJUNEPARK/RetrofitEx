@@ -38,10 +38,13 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
 
     fun requestButtonClicked(v: View) {
         launch(coroutineContext) {
-            gitUserRetrofit.retrofitCreate(adapter)
+            //gitUserRetrofit.retrofitCallCreate(adapter)
+            gitUserRetrofit.retrofitResponseCreate(adapter)
         }
     }
 }
+
+
 /*
 https://deep-dive-dev.tistory.com/39 : 공변성 / 반공변성
 */
