@@ -8,6 +8,27 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content">
+        <EditText
+            android:id="@+id/editText1"
+            android:background="@color/light_gray"
+            android:hint="input1"
+            android:gravity="center"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"/>
+
+        <EditText
+            android:id="@+id/editText2"
+            android:background="@color/light_gray"
+            android:hint="input2"
+            android:gravity="center"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/testButton1"
         android:layout_width="wrap_content"

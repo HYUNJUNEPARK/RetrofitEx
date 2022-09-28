@@ -1,7 +1,7 @@
 package com.example.networkretrofit.retrofit.git
 
 import com.example.networkretrofit.models.git.Repository
-import com.example.networkretrofit.models.mona.SearchUserResult
+import com.example.networkretrofit.models.mona.SearchUserResponse
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.GET
@@ -31,16 +31,12 @@ I think it is depends on your use-case. By using retrofit2.Response<T>,
  https://jeongupark-study-house.tistory.com/208
 Call or Response in Retrofit?
 https://stackoverflow.com/questions/64124670/call-or-response-in-retrofit
+/*
+https://deep-dive-dev.tistory.com/39 : 공변성 / 반공변성
+*/
 */
 
 interface GitApiService {
     @GET("users/Kotlin/repos")
     fun getUsers(): Call<Repository>
-
-    @GET("users/Kotlin/repos")
-    suspend fun getUsersResponse(): Response<Repository>
-
-    //Mona
-    @GET("api/users")
-    suspend fun searchUser(@Query("user_id") userId: String): Response<SearchUserResult>
 }

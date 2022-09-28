@@ -2,10 +2,11 @@ package com.example.networkretrofit
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.networkretrofit.databinding.ActivityMainBinding
 import com.example.networkretrofit.retrofit.git.GitRetrofitClient
+import com.example.networkretrofit.retrofit.mona.MonaRetrofitClient
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -18,6 +19,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
     }
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
     private lateinit var gitRetrofitClient: GitRetrofitClient
+    private lateinit var monaRetrofitClient: MonaRetrofitClient
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main
 
@@ -27,6 +29,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
 
         try {
             gitRetrofitClient = GitRetrofitClient(this)
+            monaRetrofitClient = MonaRetrofitClient(this)
         } catch(e: Exception) {
             e.printStackTrace()
         }
@@ -34,19 +37,35 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
 
     fun testButton1(v: View) {
         launch(coroutineContext) {
-            gitRetrofitClient.retrofitCallCreate()
+            withContext(Dispatchers.IO) {
+                gitRetrofitClient.getUsers()
+            }
         }
     }
 
     fun testButton2(v: View) {
-        launch(coroutineContext) {
+        val input1: String = binding.editText1.text.toString()
+        val input2: String = binding.editText2.text.toString()
 
+        if (input1.isEmpty() || input2.isEmpty()) return
+
+        launch(coroutineContext) {
+            withContext(Dispatchers.IO) {
+                monaRetrofitClient.registerUser(
+                    userId = input1,
+                    nickname = input2
+                )
+            }
         }
     }
 
     fun testButton3(v: View) {
-        launch(coroutineContext) {
+        val input1: String = binding.editText1.text.toString()
 
+        launch(coroutineContext) {
+            withContext(Dispatchers.IO) {
+                monaRetrofitClient.searchUser(input1)
+            }
         }
     }
 
@@ -57,6 +76,3 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
     }
 }
 
-/*
-https://deep-dive-dev.tistory.com/39 : 공변성 / 반공변성
-*/

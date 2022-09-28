@@ -23,7 +23,7 @@ class GitRetrofitClient(val context: Context) : CoroutineScope {
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.IO
 
-    suspend fun retrofitCallCreate() = withContext(coroutineContext) {
+    suspend fun getUsers() = withContext(coroutineContext) {
         try {
             GitRetrofitClient
                 .retrofit
