@@ -5,16 +5,19 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.networkretrofit.databinding.ActivityMainBinding
-import com.example.networkretrofit.retrofit.GitUserRetrofit
+import com.example.networkretrofit.retrofit.git.GitRetrofitClient
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import kotlin.coroutines.CoroutineContext
 
 class MainActivity : AppCompatActivity(), CoroutineScope {
+    companion object {
+        const val TAG = "testLog"
+    }
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
-    private lateinit var adapter: RecyclerViewAdapter
-    private lateinit var gitUserRetrofit: GitUserRetrofit
+    private lateinit var gitRetrofitClient: GitRetrofitClient
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main
 
@@ -23,27 +26,36 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         setContentView(binding.root)
 
         try {
-            gitUserRetrofit = GitUserRetrofit()
-            initRecyclerView()
+            gitRetrofitClient = GitRetrofitClient(this)
         } catch(e: Exception) {
             e.printStackTrace()
         }
     }
 
-    private fun initRecyclerView() = with(binding) {
-        adapter = RecyclerViewAdapter()
-        recyclerView.adapter = adapter
-        recyclerView.layoutManager = LinearLayoutManager(this@MainActivity)
+    fun testButton1(v: View) {
+        launch(coroutineContext) {
+            gitRetrofitClient.retrofitCallCreate()
+        }
     }
 
-    fun requestButtonClicked(v: View) {
+    fun testButton2(v: View) {
         launch(coroutineContext) {
-            //gitUserRetrofit.retrofitCallCreate(adapter)
-            gitUserRetrofit.retrofitResponseCreate(adapter)
+
+        }
+    }
+
+    fun testButton3(v: View) {
+        launch(coroutineContext) {
+
+        }
+    }
+
+    fun testButton4(v: View) {
+        launch(coroutineContext) {
+
         }
     }
 }
-
 
 /*
 https://deep-dive-dev.tistory.com/39 : 공변성 / 반공변성

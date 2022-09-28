@@ -1,9 +1,11 @@
-package com.example.networkretrofit.retrofit
+package com.example.networkretrofit.retrofit.git
 
-import com.example.networkretrofit.models.Repository
+import com.example.networkretrofit.models.git.Repository
+import com.example.networkretrofit.models.mona.SearchUserResult
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.GET
+import retrofit2.http.Query
 
 /*
  서비스 인터페이스
@@ -25,23 +27,20 @@ I think it is depends on your use-case. By using retrofit2.Response<T>,
  we can access errorBody()(The raw response body of an unsuccessful response.),
  code()(HTTP status code.) or headers()(HTTP headers).
 
-
-
-
  Retrofit call 과 Response 차이
  https://jeongupark-study-house.tistory.com/208
-
-
 Call or Response in Retrofit?
 https://stackoverflow.com/questions/64124670/call-or-response-in-retrofit
-
-
 */
 
-interface GitApi {
+interface GitApiService {
     @GET("users/Kotlin/repos")
-    fun getUsersCall(): Call<Repository>
+    fun getUsers(): Call<Repository>
 
     @GET("users/Kotlin/repos")
     suspend fun getUsersResponse(): Response<Repository>
+
+    //Mona
+    @GET("api/users")
+    suspend fun searchUser(@Query("user_id") userId: String): Response<SearchUserResult>
 }
