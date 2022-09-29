@@ -63,6 +63,9 @@ When we use Coroutines or RxJava in the project(which is the best professional p
 to provide asynchronous execution, we don't need enqueue callback. We could just use Response.
 ```
 
+<br></br>
+<br></br>
+
 ><a id = "content3">**3. JSON TO Kotlin Class 플러그인 설치**</a></br>
 
 -JSON 형식으로 된 텍스트 데이터를 코틀린 클래스로 간단하게 변환해주는 플러그인</br>
