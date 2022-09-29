@@ -1,9 +1,12 @@
 package com.example.networkretrofit
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.example.networkretrofit.databinding.ActivityMainBinding
+import com.example.networkretrofit.models.mona.ErrorResponse
+import com.example.networkretrofit.models.mona.SearchUserResponse
 import com.example.networkretrofit.retrofit.git.GitRetrofitClient
 import com.example.networkretrofit.retrofit.mona.MonaRetrofitClient
 import kotlinx.coroutines.CoroutineScope
@@ -28,7 +31,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
 
         try {
             gitRetrofitClient = GitRetrofitClient()
-            monaRetrofitClient = MonaRetrofitClient(this)
+            monaRetrofitClient = MonaRetrofitClient()
         } catch(e: Exception) {
             e.printStackTrace()
         }
@@ -63,7 +66,16 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
 
         launch(coroutineContext) {
             withContext(Dispatchers.IO) {
-                monaRetrofitClient.searchUser(input1)
+                val tt = monaRetrofitClient.searchUser(input1)
+                if(tt is SearchUserResponse) {
+                    Log.e(TAG, "SearchUserResponse: $tt", )
+                }
+                if (tt is ErrorResponse) {
+                    Log.e(TAG, "ErrorResponse: $tt", )
+                }
+                else {
+                    Log.e(TAG, "Exception: $tt", )
+                }
             }
         }
     }

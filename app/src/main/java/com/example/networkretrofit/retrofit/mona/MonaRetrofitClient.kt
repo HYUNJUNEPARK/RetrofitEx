@@ -1,105 +1,121 @@
 package com.example.networkretrofit.retrofit.mona
 
-import android.content.Context
 import android.util.Log
-import android.widget.Toast
 import com.example.networkretrofit.MainActivity.Companion.TAG
+import com.example.networkretrofit.models.mona.ErrorResponse
 import com.example.networkretrofit.models.mona.RegisterUser
+import com.example.networkretrofit.models.mona.RegisterUserResponse
+import com.example.networkretrofit.models.mona.SearchUserResponse
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import org.json.JSONObject
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import kotlin.coroutines.CoroutineContext
 
-class MonaRetrofitClient(val context: Context) : CoroutineScope{
+/*
+sealed class
+제네릭 in out
+You can only access response.body.string() once after that it will return null.
+https://50billion-dollars.tistory.com/entry/Android-Retrofit-errorBody-%EA%B0%92-%ED%99%95%EC%9D%B8%ED%95%98%EA%B8%B0
+*/
+
+class MonaRetrofitClient() : CoroutineScope{
     companion object {
         const val MONA_BASE_URL = "http://220.72.230.41:9010"
     }
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.IO
 
-    suspend fun registerUser(userId: String, nickname: String) = withContext(coroutineContext) {
+    //유저 등록 API
+    suspend fun registerUser(userId: String, nickname: String): Any {
         try {
-            when (
-                val response = controlApiResponse {
-                    MonaRetrofitClient.retrofit.registerUser(
-                        RegisterUser(
-                            userId = userId,
-                            nickname = nickname
-                        )
+            val response = controlApiResponse {
+                MonaRetrofitClient.retrofit.registerUser(
+                    RegisterUser(
+                        userId = userId,
+                        nickname = nickname
                     )
-                }
-            ) {
+                )
+            }
+            return when (response) {
                 is Result.Success -> {
-                    //Toast.makeText(context, "Success", Toast.LENGTH_SHORT).show()
-                    Log.d("testLog", "${response.data}")
+                    response.body as RegisterUserResponse
                 }
                 is Result.Error -> {
-                    //Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show()
+                    response.body as ErrorResponse
+                }
+                is Result.Exception -> {
+                    response.exception
                 }
             }
         } catch (e: Exception) {
             e.printStackTrace()
-            Log.e(TAG, "register Exception: $e")
+            return Result.Exception(e.message ?: "Internet error runs")
         }
     }
 
-    suspend fun searchUser(userId: String) = withContext(coroutineContext) {
+    //유저 검색 API
+    suspend fun searchUser(userId: String): Any {
         try {
-            when (
-                val response = controlApiResponse {
-                    MonaRetrofitClient.retrofit.searchUser(userId)
-                }
-            ) {
+            val response = controlApiResponse {
+                MonaRetrofitClient.retrofit.searchUser(userId)
+            }
+            return when (response) {
                 is Result.Success -> {
-
-
-                    //Toast.makeText(context, "Success", Toast.LENGTH_SHORT).show()
-                    Log.d("testLog", "Result.Success ${response.data}")
+                    response.body as SearchUserResponse
                 }
                 is Result.Error -> {
-
-
-
-                    Log.d(TAG, "searchUser response.exception: ${response.exception}")
-                    //Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show()
+                    response.body as ErrorResponse
+                }
+                is Result.Exception -> {
+                    response.exception
                 }
             }
         } catch (e: Exception) {
             e.printStackTrace()
-            Log.e(TAG, "searchUser Exception: $e")
+            return Result.Exception(e.message ?: "Internet error runs")
         }
     }
 
-    private suspend fun<T: Any> controlApiResponse(call: suspend() -> Response<T>): Result<T> {
+    private suspend fun<T: Any> controlApiResponse(call: suspend() -> Response<T>): Result<Any> {
         val response = call.invoke()
         try {
+            //code200 응답 : 성공적인 응답
             if (response.isSuccessful) {
-                Log.d(TAG, "controlApiResponse isSuccessful Response headers : ${response.headers()}")
-                Log.d(TAG, "controlApiResponse isSuccessful Response Body : ${response.body()}")
-                Log.d(TAG, "controlApiResponse isSuccessful Response raw : ${response.raw()}")
+                Log.d(TAG, "code200 Response headers : ${response.headers()}")
+                Log.d(TAG, "code200 Response Body : ${response.body()}")
+                Log.d(TAG, "code200 Response raw : ${response.raw()}")
                 return Result.Success(response.body()!!)
-            } else {
-                Log.d(TAG, "controlApiResponse unSuccessful Response headers : ${response.headers()}")
-                Log.d(TAG, "controlApiResponse unSuccessful Response errorBody : ${response.body()}")
-                //https://50billion-dollars.tistory.com/entry/Android-Retrofit-errorBody-%EA%B0%92-%ED%99%95%EC%9D%B8%ED%95%98%EA%B8%B0
-                Log.d(TAG, "controlApiResponse unSuccessful Response Body"+response.errorBody()?.string())
-                Log.d(TAG, "controlApiResponse unSuccessful Response raw : ${response.raw()}")
-                return Result.Error(response.message() ?: "Something goes wrong")
             }
-        } catch (e: Exception) {
-            Log.d(TAG, "catch: ${response.body()!!}")
-            return Result.Error(e.message ?: "Internet error runs")
+            //code400 응답 : 예외 응답
+            else {
+                if (response.errorBody() == null) {
+                    return Result.Exception("errorBody is null")
+                }
+
+                val errorBodyJsonObj = JSONObject(response.errorBody()!!.string())
+                val response400 = ErrorResponse(
+                    message = errorBodyJsonObj["message"].toString(),
+                    errorCode = errorBodyJsonObj["error_code"].toString()
+                )
+                Log.d(TAG, "code400 Response headers : ${response.headers()}")
+                Log.d(TAG, "code400 Response errorBody :$response400")
+                Log.d(TAG, "code400 Response raw : ${response.raw()}")
+                return Result.Error(response400)
+            }
+        }
+        //서버 응답 조차 없는 경우
+        catch (e: Exception) {
+            return Result.Exception(e.message ?: "Internet error runs")
         }
     }
 
     sealed class Result<out T: Any> {
-        data class Success<out T : Any>(val data: T) : Result<T>()
-        //data class Error(val exception: String): Result<Nothing>()
-        data class Error(val exception: String): Result<Nothing>()
+        data class Success<out T : Any>(val body: T) : Result<T>()
+        data class Error<out T : Any>(val body: T): Result<T>()
+        data class Exception(val exception: String): Result<Nothing>()
     }
 
     object MonaRetrofitClient {
