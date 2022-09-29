@@ -34,7 +34,6 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         }
     }
 
-    //깃 서버 유저 조회 - Call
     fun testButton1(v: View) {
         launch(coroutineContext) {
             withContext(Dispatchers.IO) {
