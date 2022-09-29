@@ -27,13 +27,14 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         setContentView(binding.root)
 
         try {
-            gitRetrofitClient = GitRetrofitClient(this)
+            gitRetrofitClient = GitRetrofitClient()
             monaRetrofitClient = MonaRetrofitClient(this)
         } catch(e: Exception) {
             e.printStackTrace()
         }
     }
 
+    //깃 서버 유저 조회 - Call
     fun testButton1(v: View) {
         launch(coroutineContext) {
             withContext(Dispatchers.IO) {

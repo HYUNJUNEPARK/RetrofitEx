@@ -15,16 +15,19 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import kotlin.coroutines.CoroutineContext
 
-/*
-okhttp client를 Retrofit에 등록하여 cookie나 header를 지정하거나 logging을 사용할 수도 있다.
- */
-
-class GitRetrofitClient(val context: Context) : CoroutineScope {
+class GitRetrofitClient() : CoroutineScope {
     companion object {
         const val GIT_BASE_URL = "https://api.github.com/"
     }
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.IO
+
+    //깃 서버 유저 조회
+    //url=https://api.github.com/users/Kotlin/repos
+
+    suspend fun tt(): String = withContext(coroutineContext) {
+        return@withContext "aa"
+    }
 
     suspend fun getUsers() = withContext(coroutineContext) {
         try {
@@ -33,21 +36,23 @@ class GitRetrofitClient(val context: Context) : CoroutineScope {
                 .getUsers()
                 .enqueue(object : Callback<Repository> {
                     override fun onResponse(call: Call<Repository>, response: Response<Repository>) {
+                        //code=200 응답 : 성공적인 응답
                         if (response.isSuccessful) {
-                            Log.d(TAG, "isSuccessful Response headers : ${response.headers()}")
-                            Log.d(TAG, "isSuccessful Response Body : ${response.body()}")
-                            Log.d(TAG, "isSuccessful Response raw : ${response.raw()}")
-                        } else {
-                            Log.d(TAG, "unSuccessful Response headers : ${response.headers()}")
-                            Log.d(TAG, "unSuccessful Response Body : ${response.body()}")
-                            Log.d(TAG, "unSuccessful Response raw : ${response.raw()}")
+                            Log.d(TAG, "code=200 Response headers : ${response.headers()}")
+                            Log.d(TAG, "code=200 Response Body : ${response.body()}")
+                            Log.d(TAG, "code=200 Response raw : ${response.raw()}")
                         }
-                        Toast.makeText(context, "onResponse // code : ${response.code()}", Toast.LENGTH_SHORT).show()
+                        //code=400 응답 : 예외 응답
+                        else {
+                            Log.d(TAG, "code=400 Response headers : ${response.headers()}")
+                            Log.d(TAG, "code=400 Response Body :"+ response.errorBody()?.string())
+                            Log.d(TAG, "code=400 Response raw : ${response.raw()}")
+                        }
                     }
+                    //서버 응답 조차 없는 경우
                     override fun onFailure(call: Call<Repository>, t: Throwable) {
+                        Log.e(TAG, "onFailure : $t")
                         t.printStackTrace()
-                        Toast.makeText(context, "onFailure", Toast.LENGTH_SHORT).show()
-
                     }
                 })
         } catch (e: Exception) {
