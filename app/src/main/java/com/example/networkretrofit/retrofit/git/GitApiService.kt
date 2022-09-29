@@ -31,9 +31,12 @@ I think it is depends on your use-case. By using retrofit2.Response<T>,
  https://jeongupark-study-house.tistory.com/208
 Call or Response in Retrofit?
 https://stackoverflow.com/questions/64124670/call-or-response-in-retrofit
-/*
+
+https://proandroiddev.com/modeling-retrofit-responses-with-sealed-classes-and-coroutines-9d6302077dfe
+
 https://deep-dive-dev.tistory.com/39 : 공변성 / 반공변성
-*/
+https://landroid.tistory.com/2
+
 */
 
 interface GitApiService {

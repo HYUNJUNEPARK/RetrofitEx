@@ -2,7 +2,6 @@ package com.example.networkretrofit
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.networkretrofit.databinding.ActivityMainBinding
 import com.example.networkretrofit.retrofit.git.GitRetrofitClient

@@ -20,6 +20,9 @@ okhttp client를 Retrofit에 등록하여 cookie나 header를 지정하거나 lo
  */
 
 class GitRetrofitClient(val context: Context) : CoroutineScope {
+    companion object {
+        const val GIT_BASE_URL = "https://api.github.com/"
+    }
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.IO
 
@@ -30,12 +33,21 @@ class GitRetrofitClient(val context: Context) : CoroutineScope {
                 .getUsers()
                 .enqueue(object : Callback<Repository> {
                     override fun onResponse(call: Call<Repository>, response: Response<Repository>) {
+                        if (response.isSuccessful) {
+                            Log.d(TAG, "isSuccessful Response headers : ${response.headers()}")
+                            Log.d(TAG, "isSuccessful Response Body : ${response.body()}")
+                            Log.d(TAG, "isSuccessful Response raw : ${response.raw()}")
+                        } else {
+                            Log.d(TAG, "unSuccessful Response headers : ${response.headers()}")
+                            Log.d(TAG, "unSuccessful Response Body : ${response.body()}")
+                            Log.d(TAG, "unSuccessful Response raw : ${response.raw()}")
+                        }
                         Toast.makeText(context, "onResponse // code : ${response.code()}", Toast.LENGTH_SHORT).show()
-                        Log.d(TAG, "Response Body : ${response.body()}")
                     }
                     override fun onFailure(call: Call<Repository>, t: Throwable) {
                         t.printStackTrace()
                         Toast.makeText(context, "onFailure", Toast.LENGTH_SHORT).show()
+
                     }
                 })
         } catch (e: Exception) {
@@ -46,7 +58,7 @@ class GitRetrofitClient(val context: Context) : CoroutineScope {
     object GitRetrofitClient {
         val retrofit: GitApiService by lazy {
             Retrofit.Builder()
-                .baseUrl("https://api.github.com/")
+                .baseUrl(GIT_BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
                 .create(GitApiService::class.java)
