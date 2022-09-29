@@ -12,7 +12,7 @@ import retrofit2.*
 import retrofit2.converter.gson.GsonConverterFactory
 import kotlin.coroutines.CoroutineContext
 
-class GitRetrofitClient() : CoroutineScope {
+class GitRetrofitClient: CoroutineScope {
     companion object {
         const val GIT_BASE_URL = "https://api.github.com/"
     }

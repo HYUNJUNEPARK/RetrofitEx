@@ -17,7 +17,6 @@
 -모델 클래스에서 키와 프로퍼티 이름이 다를 때 `@SerializedName` 이라는 애너테이션으로 명시</br>
 -baseUrl 이 HTTP 인 경우 AndroidManifest-<application> 에 `android:usesCleartextTraffic="true"` 추가</br>
 
-
 **Retrofit 동작 방식**</br>
 (1) 통신용 함수를 선언한 서비스 인터페이스를 작성</br>
 ```kotlin
@@ -50,9 +49,21 @@ GitRetrofitClient
 <br></br>
 <br></br>
 
-
-
 ><a id = "content2">**2. Call vs Response**</a></br>
+
+
+**Call**</br>
+레트로핏을 사용하여 서버로부터 응답을 받을 때 사용하는 일반적인 방법</br>
+명시적으로 성공/실패가 나눠져 그에 따른 동작 처리가 가능</br>
+
+**Response**</br>
+response.code() 로 케이스를 나눠서 처리할 수 있음</br>
+Coroutine/RXjava 등 비동기 실행을 한다면 Response 를 사용하는게 더 좋다는 의견이 있음</br>
+```
+When we use Coroutines or RxJava in the project(which is the best professional practice)
+to provide asynchronous execution, we don't need enqueue callback. We could just use Response.
+```
+
 
 <br></br>
 <br></br>
@@ -77,8 +88,23 @@ GitRetrofitClient
 
 ><a id = "ref">**참고링크**</a></br>
 
-안드로이드 - 레트로핏 errorbody() 파싱하기</br>
+안드로이드 - 레트로핏 errorBody() 파싱하기</br>
 https://salix97.tistory.com/237</br>
 
-Retrofit errorBody() 값 확인하기
-https://50billion-dollars.tistory.com/entry/Android-Retrofit-errorBody-%EA%B0%92-%ED%99%95%EC%9D%B8%ED%95%98%EA%B8%B0
+Retrofit errorBody() 값 확인하기</br>
+https://50billion-dollars.tistory.com/entry/Android-Retrofit-errorBody-%EA%B0%92-%ED%99%95%EC%9D%B8%ED%95%98%EA%B8%B0</br>
+
+Retrofit Call 과 Response 차이</br>
+https://jeongupark-study-house.tistory.com/208</br>
+
+Retrofit 응답 상태 관리</br>
+https://landroid.tistory.com/2</br>
+
+Call or Response in Retrofit?</br>
+https://stackoverflow.com/questions/64124670/call-or-response-in-retrofit</br>
+
+Modeling Retrofit Responses With Sealed Classes and Coroutines</br>
+https://proandroiddev.com/modeling-retrofit-responses-with-sealed-classes-and-coroutines-9d6302077dfe</br>
+
+Generics - 공변성(covariant)과 반공변성(contravariant)</br>
+https://deep-dive-dev.tistory.com/39</br>

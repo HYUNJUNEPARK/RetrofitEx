@@ -49,7 +49,9 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         val input1: String = binding.editText1.text.toString()
         val input2: String = binding.editText2.text.toString()
 
-        if (input1.isEmpty() || input2.isEmpty()) return
+        if (input1.isEmpty() || input2.isEmpty()) {
+            return
+        }
 
         launch(coroutineContext) {
             withContext(Dispatchers.IO) {
@@ -66,15 +68,19 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
 
         launch(coroutineContext) {
             withContext(Dispatchers.IO) {
-                val tt = monaRetrofitClient.searchUser(input1)
-                if(tt is SearchUserResponse) {
-                    Log.e(TAG, "SearchUserResponse: $tt", )
+                val response: Any = monaRetrofitClient.searchUser(input1)
+
+                if(response is SearchUserResponse) {
+                    Log.e(TAG, "SearchUserResponse: $response")
+                    return@withContext
                 }
-                if (tt is ErrorResponse) {
-                    Log.e(TAG, "ErrorResponse: $tt", )
+                if (response is ErrorResponse) {
+                    Log.e(TAG, "ErrorResponse: $response")
+                    return@withContext
                 }
                 else {
-                    Log.e(TAG, "Exception: $tt", )
+                    Log.e(TAG, "Exception: $response")
+                    return@withContext
                 }
             }
         }

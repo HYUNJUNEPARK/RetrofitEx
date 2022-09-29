@@ -14,14 +14,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import kotlin.coroutines.CoroutineContext
 
-/*
-sealed class
-제네릭 in out
-You can only access response.body.string() once after that it will return null.
-https://50billion-dollars.tistory.com/entry/Android-Retrofit-errorBody-%EA%B0%92-%ED%99%95%EC%9D%B8%ED%95%98%EA%B8%B0
-*/
-
-class MonaRetrofitClient() : CoroutineScope{
+class MonaRetrofitClient: CoroutineScope{
     companion object {
         const val MONA_BASE_URL = "http://220.72.230.41:9010"
     }
@@ -83,14 +76,14 @@ class MonaRetrofitClient() : CoroutineScope{
         val response = call.invoke()
         try {
             //code200 응답 : 성공적인 응답
-            if (response.isSuccessful) {
+            if (response.code() == 200) {
                 Log.d(TAG, "code200 Response headers : ${response.headers()}")
                 Log.d(TAG, "code200 Response Body : ${response.body()}")
                 Log.d(TAG, "code200 Response raw : ${response.raw()}")
                 return Result.Success(response.body()!!)
             }
             //code400 응답 : 예외 응답
-            else {
+            if (response.code() == 400) {
                 if (response.errorBody() == null) {
                     return Result.Exception("errorBody is null")
                 }
@@ -104,6 +97,9 @@ class MonaRetrofitClient() : CoroutineScope{
                 Log.d(TAG, "code400 Response errorBody :$response400")
                 Log.d(TAG, "code400 Response raw : ${response.raw()}")
                 return Result.Error(response400)
+            }
+            else {
+                return Result.Exception(response.errorBody()?.string()+"Internet error runs")
             }
         }
         //서버 응답 조차 없는 경우
