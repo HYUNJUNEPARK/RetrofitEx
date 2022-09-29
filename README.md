@@ -3,8 +3,8 @@
 ---
 1. <a href = "#content1">레트로핏 라이브러리</a></br>
 2. <a href = "#content2">Call vs Response</a></br>
-3. <a href = "#content3">errorBody() 처리</a></br>
-4. <a href = "#content4">JSON TO Kotlin Class 플러그인 설치</a></br>
+3. <a href = "#content3">JSON TO Kotlin Class 플러그인 설치</a></br>
+4. <a href = "#content4">Generic</a></br>
 * <a href = "#ref">참고링크</a>
 ---
 ><a id = "content1">**1. 레트로핏 라이브러리**</a></br>
@@ -51,7 +51,6 @@ GitRetrofitClient
 
 ><a id = "content2">**2. Call vs Response**</a></br>
 
-
 **Call**</br>
 레트로핏을 사용하여 서버로부터 응답을 받을 때 사용하는 일반적인 방법</br>
 명시적으로 성공/실패가 나눠져 그에 따른 동작 처리가 가능</br>
@@ -64,19 +63,7 @@ When we use Coroutines or RxJava in the project(which is the best professional p
 to provide asynchronous execution, we don't need enqueue callback. We could just use Response.
 ```
 
-
-<br></br>
-<br></br>
-
-
-><a id = "content3">**3. errorBody() 처리**</a></br>
-
-<br></br>
-<br></br>
-
-
-
-><a id = "content4">**4. JSON TO Kotlin Class 플러그인 설치**</a></br>
+><a id = "content3">**3. JSON TO Kotlin Class 플러그인 설치**</a></br>
 
 -JSON 형식으로 된 텍스트 데이터를 코틀린 클래스로 간단하게 변환해주는 플러그인</br>
 -[File]-[Settings]->[Plugins] 선택 후 JASON To Kotlin Class 플러그인 검색 후 설치</br>
@@ -84,6 +71,30 @@ to provide asynchronous execution, we don't need enqueue callback. We could just
 
 <br></br>
 <br></br>
+
+><a id = "content4">**4. Generic**</a></br>
+
+**무공변성(invariant)**</br>
+-상속관계 상관없이 자신의 타입만 허용함</br>
+-자바에서의 <T>와 같은 개념</br>
+-코틀린에서는 따로 지정해주지 않으면 기본적으로 모든 제네릭은 무공변</br>
+
+
+**공변성(covariant)**</br>
+-자기 자신과 자식 객체를 허용함</br>
+-자바에서의 <? extent T>와 같은 개념</br>
+-코틀린에서는 `out` 키워드를 사용</br>
+
+
+**반공변성(contravariant)**</br>
+-자기 자신과 부모 객체만 허용함(공변성의 반대)</br>
+-자바에서의 <? super T>와 같은 개념</br>
+-코를린에서는 `in` 키워드를 사용</br>
+
+
+<br></br>
+<br></br>
+
 ---
 
 ><a id = "ref">**참고링크**</a></br>
