@@ -2,91 +2,92 @@ package com.example.networkretrofit
 
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
 import com.example.networkretrofit.databinding.ActivityMainBinding
-import com.example.networkretrofit.models.response.ErrorResponse
-import com.example.networkretrofit.models.response.SearchUserResponse
-import com.example.networkretrofit.retrofit.call.GitRetrofitClient
-import com.example.networkretrofit.retrofit.response.ServerRetrofitClient
+import com.example.networkretrofit.model.response.ErrorResponse
+import com.example.networkretrofit.model.response.SearchUserResponse
+import com.example.networkretrofit.retrofit.call.CallRetrofitClient
+import com.example.networkretrofit.retrofit.response.ResponseRetrofitClient
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import kotlin.coroutines.CoroutineContext
 
 class MainActivity : AppCompatActivity(), CoroutineScope {
     companion object {
         const val TAG = "testLog"
     }
-    private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
-    private lateinit var gitRetrofitClient: GitRetrofitClient
-    private lateinit var serverRetrofitClient: ServerRetrofitClient
+    private lateinit var binding: ActivityMainBinding
+    private lateinit var callRetrofitClient: CallRetrofitClient
+    private lateinit var responseRetrofitClient: ResponseRetrofitClient
+
     override val coroutineContext: CoroutineContext
-        get() = Dispatchers.Main
+        get() = Dispatchers.IO
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(binding.root)
-
         try {
-            gitRetrofitClient = GitRetrofitClient()
-            serverRetrofitClient = ServerRetrofitClient()
+            binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+            binding.mainActivity = this
+
+            callRetrofitClient = CallRetrofitClient()
+            responseRetrofitClient = ResponseRetrofitClient()
         } catch(e: Exception) {
             e.printStackTrace()
         }
+
     }
 
-    fun testButton1(v: View) {
+    //Call : getUsers
+    fun testButton1() {
         launch(coroutineContext) {
-            withContext(Dispatchers.IO) {
-                gitRetrofitClient.getUsers()
-            }
+            callRetrofitClient.getUsers()
         }
     }
 
-    fun testButton2(v: View) {
-        val input1: String = binding.editText1.text.toString()
-        val input2: String = binding.editText2.text.toString()
-
-        if (input1.isEmpty() || input2.isEmpty()) {
-            return
-        }
-
+    //Response : registerUser
+    fun testButton2() {
         launch(coroutineContext) {
-            withContext(Dispatchers.IO) {
-                serverRetrofitClient.registerUser(
-                    userId = input1,
-                    nickname = input2
-                )
-            }
-        }
-    }
-
-    fun testButton3(v: View) {
-        val input1: String = binding.editText1.text.toString()
-
-        launch(coroutineContext) {
-            withContext(Dispatchers.IO) {
-                val response: Any = serverRetrofitClient.searchUser(input1)
-
-                if(response is SearchUserResponse) {
-                    Log.e(TAG, "SearchUserResponse: $response")
-                    return@withContext
+            val response = responseRetrofitClient.registerUser(
+                userId = binding.editText1.text.toString(),
+                nickname = binding.editText2.text.toString()
+            )
+            when (response) {
+                is SearchUserResponse -> {
+                    Log.d(TAG, "SearchUserResponse: $response")
                 }
-                if (response is ErrorResponse) {
+                is ErrorResponse -> {
                     Log.e(TAG, "ErrorResponse: $response")
-                    return@withContext
                 }
-                else {
+                else -> {
                     Log.e(TAG, "Exception: $response")
-                    return@withContext
                 }
             }
         }
     }
 
-    fun testButton4(v: View) {
+    //Response : searchUser
+    fun testButton3() {
+        launch(coroutineContext) {
+            val response: Any = responseRetrofitClient.searchUser(
+                userId = binding.editText1.text.toString()
+            )
+            when (response) {
+                is SearchUserResponse -> {
+                    Log.d(TAG, "SearchUserResponse: $response")
+                }
+                is ErrorResponse -> {
+                    Log.e(TAG, "ErrorResponse: $response")
+                }
+                else -> {
+                    Log.e(TAG, "Exception: $response")
+                }
+            }
+        }
+    }
+
+    fun testButton4() {
         launch(coroutineContext) {
 
         }

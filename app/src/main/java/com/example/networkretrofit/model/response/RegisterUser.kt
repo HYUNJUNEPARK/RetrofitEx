@@ -1,4 +1,4 @@
-package com.example.networkretrofit.models.response
+package com.example.networkretrofit.model.response
 
 
 import com.google.gson.annotations.SerializedName
