@@ -5,10 +5,10 @@ import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.example.networkretrofit.databinding.ActivityMainBinding
-import com.example.networkretrofit.models.mona.ErrorResponse
-import com.example.networkretrofit.models.mona.SearchUserResponse
-import com.example.networkretrofit.retrofit.git.GitRetrofitClient
-import com.example.networkretrofit.retrofit.mona.MonaRetrofitClient
+import com.example.networkretrofit.models.response.ErrorResponse
+import com.example.networkretrofit.models.response.SearchUserResponse
+import com.example.networkretrofit.retrofit.call.GitRetrofitClient
+import com.example.networkretrofit.retrofit.response.ServerRetrofitClient
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
     }
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
     private lateinit var gitRetrofitClient: GitRetrofitClient
-    private lateinit var monaRetrofitClient: MonaRetrofitClient
+    private lateinit var serverRetrofitClient: ServerRetrofitClient
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main
 
@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
 
         try {
             gitRetrofitClient = GitRetrofitClient()
-            monaRetrofitClient = MonaRetrofitClient()
+            serverRetrofitClient = ServerRetrofitClient()
         } catch(e: Exception) {
             e.printStackTrace()
         }
@@ -55,7 +55,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
 
         launch(coroutineContext) {
             withContext(Dispatchers.IO) {
-                monaRetrofitClient.registerUser(
+                serverRetrofitClient.registerUser(
                     userId = input1,
                     nickname = input2
                 )
@@ -68,7 +68,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
 
         launch(coroutineContext) {
             withContext(Dispatchers.IO) {
-                val response: Any = monaRetrofitClient.searchUser(input1)
+                val response: Any = serverRetrofitClient.searchUser(input1)
 
                 if(response is SearchUserResponse) {
                     Log.e(TAG, "SearchUserResponse: $response")

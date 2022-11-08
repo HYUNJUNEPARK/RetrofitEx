@@ -1,9 +1,9 @@
-package com.example.networkretrofit.retrofit.git
+package com.example.networkretrofit.retrofit.call
 
 import android.util.Log
 import com.example.networkretrofit.MainActivity.Companion.TAG
-import com.example.networkretrofit.models.git.ErrorResponse
-import com.example.networkretrofit.models.git.Repository
+import com.example.networkretrofit.models.call.ErrorResponse
+import com.example.networkretrofit.models.call.Repository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -13,9 +13,16 @@ import retrofit2.converter.gson.GsonConverterFactory
 import kotlin.coroutines.CoroutineContext
 
 class GitRetrofitClient: CoroutineScope {
-    companion object {
-        const val GIT_BASE_URL = "https://api.github.com/"
+    object GitRetrofitClient {
+        val retrofit: GitApiService by lazy {
+            Retrofit.Builder()
+                .baseUrl("https://api.github.com/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+                .create(GitApiService::class.java)
+        }
     }
+
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.IO
 
@@ -63,16 +70,6 @@ class GitRetrofitClient: CoroutineScope {
                 })
         } catch (e: Exception) {
             e.printStackTrace()
-        }
-    }
-
-    object GitRetrofitClient {
-        val retrofit: GitApiService by lazy {
-            Retrofit.Builder()
-                .baseUrl(GIT_BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-                .create(GitApiService::class.java)
         }
     }
 }

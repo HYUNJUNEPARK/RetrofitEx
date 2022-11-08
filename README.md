@@ -14,8 +14,9 @@
 `implementation 'com.squareup.okhttp3:logging-interceptor:4.6.0'`</br>
 
 -인터페이스를 해석해 HTTP 로 데이터를 통신하는 라이브러리</br>
--모델 클래스에서 키와 프로퍼티 이름이 다를 때 `@SerializedName` 이라는 애너테이션으로 명시</br>
--baseUrl 이 HTTP 인 경우 AndroidManifest-<application> 에 `android:usesCleartextTraffic="true"` 추가</br>
+-Response Data Class 생성 시 `JSON TO Kotlin Class` 사용하면 편리 (3. JSON TO Kotlin Class 플러그인 설치 참고)</br>
+-baseUrl 이 HTTP 인 경우 AndroidManifest-<application> `android:usesCleartextTraffic="true"` 추가</br>
+-GsonConverterFactory : GSON 데이터를 코틀린 데이터 클래스로 변환해 주는 컨터버</br>
 
 **Retrofit 동작 방식**</br>
 (1) 통신용 함수를 선언한 서비스 인터페이스를 작성</br>
@@ -25,14 +26,16 @@ interface GitApiService {
     fun getUsers(): Call<Repository>
 }
 ```
+
 (2) retrofit 객체 생성</br>
 ```kotlin
 Retrofit.Builder()
-    .baseUrl(GIT_BASE_URL)
-    .addConverterFactory(GsonConverterFactory.create()) //GsonConverter : JSON 데이터를 코틀린 데이터 클래스로 변환해 주는 컨터버
+    .baseUrl(BASE_URL)
+    .addConverterFactory(GsonConverterFactory.create())
     .build()
     .create(GitApiService::class.java)
 ```
+
 (3) retrofit 객체에서 서비스 인터페이스 함수를 호출하고 `enqueue()` 로 콜백처리</br>
 ```kotlin
 GitRetrofitClient
@@ -40,8 +43,10 @@ GitRetrofitClient
     .getUsers()
     .enqueue(object : Callback<Repository> {
         override fun onResponse(call: Call<Repository>, response: Response<Repository>) {
+            //Success
         }
         override fun onFailure(call: Call<Repository>, t: Throwable) {
+            //Failed
         }
     })
 ```
@@ -52,12 +57,12 @@ GitRetrofitClient
 ><a id = "content2">**2. Call vs Response**</a></br>
 
 **Call**</br>
-레트로핏을 사용하여 서버로부터 응답을 받을 때 사용하는 일반적인 방법</br>
-명시적으로 성공/실패가 나눠져 그에 따른 동작 처리가 가능</br>
+-레트로핏을 사용하여 서버로부터 응답을 받을 때 사용하는 일반적인 방법</br>
+-명시적으로 성공/실패가 나눠져 그에 따른 동작 처리가 가능</br>
 
 **Response**</br>
-response.code() 로 케이스를 나눠서 처리할 수 있음</br>
-Coroutine/RXjava 등 비동기 실행을 한다면 Response 를 사용하는게 더 좋다는 의견이 있음</br>
+-response.code() 로 케이스를 나눠서 처리할 수 있음</br>
+-Coroutine/RXjava 등 비동기 실행을 한다면 Response 를 사용하는게 더 좋다는 의견이 있음</br>
 ```
 When we use Coroutines or RxJava in the project(which is the best professional practice)
 to provide asynchronous execution, we don't need enqueue callback. We could just use Response.

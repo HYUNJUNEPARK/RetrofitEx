@@ -1,15 +1,15 @@
-package com.example.networkretrofit.retrofit.mona
+package com.example.networkretrofit.retrofit.response
 
-import com.example.networkretrofit.models.mona.RegisterUser
-import com.example.networkretrofit.models.mona.RegisterUserResponse
-import com.example.networkretrofit.models.mona.SearchUserResponse
+import com.example.networkretrofit.models.response.RegisterUser
+import com.example.networkretrofit.models.response.RegisterUserResponse
+import com.example.networkretrofit.models.response.SearchUserResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Query
 
-interface MonaApiService {
+interface ServerApiService {
     @GET("api/users")
     suspend fun searchUser(
         @Query("user_id") userId: String

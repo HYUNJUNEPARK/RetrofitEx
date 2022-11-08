@@ -1,11 +1,11 @@
-package com.example.networkretrofit.retrofit.mona
+package com.example.networkretrofit.retrofit.response
 
 import android.util.Log
 import com.example.networkretrofit.MainActivity.Companion.TAG
-import com.example.networkretrofit.models.mona.ErrorResponse
-import com.example.networkretrofit.models.mona.RegisterUser
-import com.example.networkretrofit.models.mona.RegisterUserResponse
-import com.example.networkretrofit.models.mona.SearchUserResponse
+import com.example.networkretrofit.models.response.ErrorResponse
+import com.example.networkretrofit.models.response.RegisterUser
+import com.example.networkretrofit.models.response.RegisterUserResponse
+import com.example.networkretrofit.models.response.SearchUserResponse
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import org.json.JSONObject
@@ -14,10 +14,23 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import kotlin.coroutines.CoroutineContext
 
-class MonaRetrofitClient: CoroutineScope{
-    companion object {
-        const val MONA_BASE_URL = "http://220.72.230.41:9010"
+class ServerRetrofitClient: CoroutineScope{
+    object MonaRetrofitClient {
+        val retrofit: ServerApiService by lazy {
+            Retrofit.Builder()
+                .baseUrl("http://220.72.230.41:9010")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+                .create(ServerApiService::class.java)
+        }
     }
+
+    sealed class Result<out T: Any> {
+        data class Success<out T : Any>(val body: T) : Result<T>()
+        data class Error<out T : Any>(val body: T): Result<T>()
+        data class Exception(val exception: String): Result<Nothing>()
+    }
+
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.IO
 
@@ -105,22 +118,6 @@ class MonaRetrofitClient: CoroutineScope{
         //서버 응답 조차 없는 경우
         catch (e: Exception) {
             return Result.Exception(e.message ?: "Internet error runs")
-        }
-    }
-
-    sealed class Result<out T: Any> {
-        data class Success<out T : Any>(val body: T) : Result<T>()
-        data class Error<out T : Any>(val body: T): Result<T>()
-        data class Exception(val exception: String): Result<Nothing>()
-    }
-
-    object MonaRetrofitClient {
-        val retrofit: MonaApiService by lazy {
-            Retrofit.Builder()
-                .baseUrl(MONA_BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-                .create(MonaApiService::class.java)
         }
     }
 }
