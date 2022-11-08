@@ -8,6 +8,7 @@ import com.example.networkretrofit.model.response.RegisterUserResponse
 import com.example.networkretrofit.model.response.SearchUserResponse
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.json.JSONObject
 import retrofit2.Response
 import retrofit2.Retrofit

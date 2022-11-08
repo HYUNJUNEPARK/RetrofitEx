@@ -4,15 +4,14 @@ import android.util.Log
 import com.example.networkretrofit.MainActivity.Companion.TAG
 import com.example.networkretrofit.model.call.ErrorResponse
 import com.example.networkretrofit.model.call.Repository
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import org.json.JSONObject
-import retrofit2.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import kotlin.coroutines.CoroutineContext
 
-class CallRetrofitClient: CoroutineScope {
+class CallRetrofitClient {
     object CallRetrofitClient {
         val retrofit: CallApiService by lazy {
             Retrofit.Builder()
@@ -23,12 +22,9 @@ class CallRetrofitClient: CoroutineScope {
         }
     }
 
-    override val coroutineContext: CoroutineContext
-        get() = Dispatchers.IO
-
     //깃서버 유저 조회
     //반환 값은 따로 없으며 단순하게 결과를 로그로 찍음
-    suspend fun getUsers() = withContext(coroutineContext) {
+    fun getUsersAsync() {
         try {
             CallRetrofitClient
                 .retrofit
@@ -73,5 +69,32 @@ class CallRetrofitClient: CoroutineScope {
         } catch (e: Exception) {
             e.printStackTrace()
         }
+    }
+
+    fun getUsersSync(): Any? {
+        try {
+            val result = CallRetrofitClient
+                .retrofit
+                .getUsers()
+                .execute()
+
+            return when(result.code()) {
+                200 -> {
+                    Log.d(TAG, "200 response ")
+                    result.body()
+                }
+                400 -> {
+                    Log.e(TAG, "400 response ")
+                    result.errorBody()
+                }
+                else -> {
+                    Log.e(TAG, "Exception response ")
+                    result.message()
+                }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return null
     }
 }

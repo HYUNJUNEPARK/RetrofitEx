@@ -36,18 +36,25 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         } catch(e: Exception) {
             e.printStackTrace()
         }
-
     }
 
-    //Call : getUsers
+    //Call : getUsersAsync
     fun testButton1() {
+        callRetrofitClient.getUsersAsync()
+    }
+
+    //Call : getUsersSync
+    //코루틴 블럭에서 실행하지 않으면 Null 값이 나옴
+    fun testButton2() {
         launch(coroutineContext) {
-            callRetrofitClient.getUsers()
+            callRetrofitClient.getUsersSync().let {
+                Log.d(TAG, "getUsersSync Result : $it")
+            }
         }
     }
 
     //Response : registerUser
-    fun testButton2() {
+    fun testButton3() {
         launch(coroutineContext) {
             val response = responseRetrofitClient.registerUser(
                 userId = binding.editText1.text.toString(),
@@ -68,7 +75,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
     }
 
     //Response : searchUser
-    fun testButton3() {
+    fun testButton4() {
         launch(coroutineContext) {
             val response: Any = responseRetrofitClient.searchUser(
                 userId = binding.editText1.text.toString()
@@ -84,12 +91,6 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                     Log.e(TAG, "Exception: $response")
                 }
             }
-        }
-    }
-
-    fun testButton4() {
-        launch(coroutineContext) {
-
         }
     }
 }

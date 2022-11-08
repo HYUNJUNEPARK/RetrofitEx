@@ -62,7 +62,7 @@ GitRetrofitClient
 
 **Response**</br>
 -response.code() 로 케이스를 나눠서 처리할 수 있음</br>
--Coroutine/RXjava 등 비동기 실행을 한다면 Response 를 사용하는게 더 좋다는 의견이 있음</br>
+-Coroutine/RXjava 등 비동기 실행을 한다면 Response 를 사용하는게 좋다는 언급이 있음</br>
 ```
 When we use Coroutines or RxJava in the project(which is the best professional practice)
 to provide asynchronous execution, we don't need enqueue callback. We could just use Response.
