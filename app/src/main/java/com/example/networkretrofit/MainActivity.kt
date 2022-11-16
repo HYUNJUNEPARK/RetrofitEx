@@ -5,10 +5,10 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.example.networkretrofit.databinding.ActivityMainBinding
-import com.example.networkretrofit.model.response.ErrorResponse
-import com.example.networkretrofit.model.response.SearchUserResponse
-import com.example.networkretrofit.retrofit.call.CallRetrofitClient
-import com.example.networkretrofit.retrofit.response.ResponseRetrofitClient
+import com.example.networkretrofit.model.server.ErrorResponse
+import com.example.networkretrofit.model.server.SearchUserResponse
+import com.example.networkretrofit.retrofit.git.GitRetrofitClient
+import com.example.networkretrofit.retrofit.server.ServerRetrofitClient
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -19,8 +19,8 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         const val TAG = "testLog"
     }
     private lateinit var binding: ActivityMainBinding
-    private lateinit var callRetrofitClient: CallRetrofitClient
-    private lateinit var responseRetrofitClient: ResponseRetrofitClient
+    private lateinit var gitRetrofitClient: GitRetrofitClient
+    private lateinit var serverRetrofitClient: ServerRetrofitClient
 
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.IO
@@ -31,8 +31,8 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
             binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
             binding.mainActivity = this
 
-            callRetrofitClient = CallRetrofitClient()
-            responseRetrofitClient = ResponseRetrofitClient()
+            gitRetrofitClient = GitRetrofitClient()
+            serverRetrofitClient = ServerRetrofitClient()
         } catch(e: Exception) {
             e.printStackTrace()
         }
@@ -40,14 +40,14 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
 
     //Call : getUsersAsync
     fun testButton1() {
-        callRetrofitClient.getUsersAsync()
+        gitRetrofitClient.getUsersAsync()
     }
 
     //Call : getUsersSync
     //코루틴 블럭에서 실행하지 않으면 Null 값이 나옴
     fun testButton2() {
         launch(coroutineContext) {
-            callRetrofitClient.getUsersSync().let {
+            gitRetrofitClient.getUsersSync().let {
                 Log.d(TAG, "getUsersSync Result : $it")
             }
         }
@@ -56,7 +56,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
     //Response : registerUser
     fun testButton3() {
         launch(coroutineContext) {
-            val response = responseRetrofitClient.registerUser(
+            val response = serverRetrofitClient.registerUser(
                 userId = binding.editText1.text.toString(),
                 nickname = binding.editText2.text.toString()
             )
@@ -77,7 +77,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
     //Response : searchUser
     fun testButton4() {
         launch(coroutineContext) {
-            val response: Any = responseRetrofitClient.searchUser(
+            val response: Any = serverRetrofitClient.searchUser(
                 userId = binding.editText1.text.toString()
             )
             when (response) {

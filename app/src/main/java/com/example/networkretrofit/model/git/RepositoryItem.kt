@@ -1,4 +1,4 @@
-package com.example.networkretrofit.model.call
+package com.example.networkretrofit.model.git
 
 data class RepositoryItem(
     val allow_forking: Boolean,

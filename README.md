@@ -59,14 +59,15 @@ GitRetrofitClient
 **Call**</br>
 -레트로핏을 사용하여 서버로부터 응답을 받을 때 사용하는 일반적인 방법</br>
 -명시적으로 성공/실패가 나눠져 그에 따른 동작 처리가 가능</br>
+-"Call" is useful when we are willing to use its enqueue callback function-Async</br>
 
 **Response**</br>
 -response.code() 로 케이스를 나눠서 처리할 수 있음</br>
--Coroutine/RXjava 등 비동기 실행을 한다면 Response 를 사용하는게 좋다는 언급이 있음</br>
-```
-When we use Coroutines or RxJava in the project(which is the best professional practice)
-to provide asynchronous execution, we don't need enqueue callback. We could just use Response.
-```
+-Coroutine/RXjava 등 비동기 실행을 한다면 Response 를 사용</br>
+-When we use Coroutines or RxJava in the project(which is the best professional practice)</br>
+to provide asynchronous execution , we don't need enqueue callback. We could just use Response.</br>
+When we use Coroutines or RxJava in the project(which is the best professional practice)</br>
+to provide asynchronous execution, we don't need enqueue callback. We could just use Response.</br>
 
 <br></br>
 <br></br>

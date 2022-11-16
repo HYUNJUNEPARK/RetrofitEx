@@ -1,28 +1,24 @@
-package com.example.networkretrofit.retrofit.response
+package com.example.networkretrofit.retrofit.server
 
 import android.util.Log
 import com.example.networkretrofit.MainActivity.Companion.TAG
-import com.example.networkretrofit.model.response.ErrorResponse
-import com.example.networkretrofit.model.response.RegisterUser
-import com.example.networkretrofit.model.response.RegisterUserResponse
-import com.example.networkretrofit.model.response.SearchUserResponse
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import com.example.networkretrofit.model.server.ErrorResponse
+import com.example.networkretrofit.model.server.RegisterUser
+import com.example.networkretrofit.model.server.RegisterUserResponse
+import com.example.networkretrofit.model.server.SearchUserResponse
 import org.json.JSONObject
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import kotlin.coroutines.CoroutineContext
 
-class ResponseRetrofitClient: CoroutineScope{
+class ServerRetrofitClient{
     object ResponseRetrofitClient {
-        val retrofit: ResponseApiService by lazy {
+        val retrofit: ServerApiService by lazy {
             Retrofit.Builder()
                 .baseUrl("http://220.72.230.41:9010")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
-                .create(ResponseApiService::class.java)
+                .create(ServerApiService::class.java)
         }
     }
 
@@ -31,9 +27,6 @@ class ResponseRetrofitClient: CoroutineScope{
         data class Error<out T : Any>(val body: T): Result<T>()
         data class Exception(val exception: String): Result<Nothing>()
     }
-
-    override val coroutineContext: CoroutineContext
-        get() = Dispatchers.IO
 
     //유저 등록 API
     suspend fun registerUser(userId: String, nickname: String): Any {
@@ -86,10 +79,11 @@ class ResponseRetrofitClient: CoroutineScope{
         }
     }
 
-    private suspend fun<T: Any> controlApiResponse(call: suspend() -> Response<T>): Result<Any> {
+    private suspend fun<T: Any> controlApiResponse(
+        call: suspend() -> Response<T>
+    ): Result<Any> {
         try {
             val response = call.invoke()
-
             when(response.code()) {
                 //200 Response : 성공적인 응답
                 200 -> {
@@ -117,7 +111,10 @@ class ResponseRetrofitClient: CoroutineScope{
                 }
                 //Exception
                 else -> {
-                    return Result.Exception(response.errorBody()?.string()+"Internet error runs")
+                    return Result.Exception(
+                                response.errorBody()?.string()+
+                                "Internet error runs"
+                            )
                 }
             }
         }

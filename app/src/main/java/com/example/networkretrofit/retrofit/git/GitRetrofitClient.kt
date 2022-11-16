@@ -1,9 +1,9 @@
-package com.example.networkretrofit.retrofit.call
+package com.example.networkretrofit.retrofit.git
 
 import android.util.Log
 import com.example.networkretrofit.MainActivity.Companion.TAG
-import com.example.networkretrofit.model.call.ErrorResponse
-import com.example.networkretrofit.model.call.Repository
+import com.example.networkretrofit.model.git.ErrorResponse
+import com.example.networkretrofit.model.git.Repository
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
@@ -11,14 +11,14 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class CallRetrofitClient {
-    object CallRetrofitClient {
-        val retrofit: CallApiService by lazy {
+class GitRetrofitClient {
+    object GitRetrofitClient {
+        val retrofit: GitApiService by lazy {
             Retrofit.Builder()
                 .baseUrl("https://api.github.com/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
-                .create(CallApiService::class.java)
+                .create(GitApiService::class.java)
         }
     }
 
@@ -26,7 +26,7 @@ class CallRetrofitClient {
     //반환 값은 따로 없으며 단순하게 결과를 로그로 찍음
     fun getUsersAsync() {
         try {
-            CallRetrofitClient
+            GitRetrofitClient
                 .retrofit
                 .getUsers()
                 .enqueue(object : Callback<Repository> {
@@ -73,7 +73,7 @@ class CallRetrofitClient {
 
     fun getUsersSync(): Any? {
         try {
-            val result = CallRetrofitClient
+            val result = GitRetrofitClient
                 .retrofit
                 .getUsers()
                 .execute()
