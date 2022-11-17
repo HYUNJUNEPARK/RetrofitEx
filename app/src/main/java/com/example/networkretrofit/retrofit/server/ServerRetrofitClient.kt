@@ -1,7 +1,7 @@
 package com.example.networkretrofit.retrofit.server
 
 import android.util.Log
-import com.example.networkretrofit.MainActivity.Companion.TAG
+import com.example.networkretrofit.Util.TAG
 import com.example.networkretrofit.model.server.ErrorResponse
 import com.example.networkretrofit.model.server.RegisterUser
 import com.example.networkretrofit.model.server.RegisterUserResponse

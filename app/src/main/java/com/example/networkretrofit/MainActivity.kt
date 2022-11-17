@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import com.example.networkretrofit.Util.TAG
+import com.example.networkretrofit.Util.showCurrentThread
 import com.example.networkretrofit.databinding.ActivityMainBinding
 import com.example.networkretrofit.model.server.ErrorResponse
 import com.example.networkretrofit.model.server.SearchUserResponse
@@ -12,18 +14,11 @@ import com.example.networkretrofit.retrofit.server.ServerRetrofitClient
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlin.coroutines.CoroutineContext
 
-class MainActivity : AppCompatActivity(), CoroutineScope {
-    companion object {
-        const val TAG = "testLog"
-    }
+class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var gitRetrofitClient: GitRetrofitClient
     private lateinit var serverRetrofitClient: ServerRetrofitClient
-
-    override val coroutineContext: CoroutineContext
-        get() = Dispatchers.IO
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,24 +33,29 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         }
     }
 
-    //Call : getUsersAsync
-    fun testButton1() {
-        gitRetrofitClient.getUsersAsync()
-    }
+    //Call
+    fun callExample() {
+        //enqueue()
+        //gitRetrofitClient.getUsers_enqueue()
 
-    //Call : getUsersSync
-    //코루틴 블럭에서 실행하지 않으면 Null 값이 나옴
-    fun testButton2() {
-        launch(coroutineContext) {
-            gitRetrofitClient.getUsersSync().let {
-                Log.d(TAG, "getUsersSync Result : $it")
+        //execute()
+        CoroutineScope(Dispatchers.IO).launch {
+            gitRetrofitClient.getUsers_execute().let {
+                Log.d(TAG, "getUsers_execute(): $it")
             }
         }
     }
 
+
+
+
+    fun testButton2() {
+
+    }
+
     //Response : registerUser
     fun testButton3() {
-        launch(coroutineContext) {
+        CoroutineScope(Dispatchers.IO).launch {
             val response = serverRetrofitClient.registerUser(
                 userId = binding.editText1.text.toString(),
                 nickname = binding.editText2.text.toString()
@@ -76,7 +76,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
 
     //Response : searchUser
     fun testButton4() {
-        launch(coroutineContext) {
+        CoroutineScope(Dispatchers.IO).launch {
             val response: Any = serverRetrofitClient.searchUser(
                 userId = binding.editText1.text.toString()
             )

@@ -1,16 +1,32 @@
 package com.example.networkretrofit.retrofit.git
 
 import android.util.Log
-import com.example.networkretrofit.MainActivity.Companion.TAG
-import com.example.networkretrofit.model.git.ErrorResponse
+import com.example.networkretrofit.Util.TAG
+import com.example.networkretrofit.Util.showCurrentThread
+import com.example.networkretrofit.Util.showResponseDetail
 import com.example.networkretrofit.model.git.Repository
-import org.json.JSONObject
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
+
+/*
+Call 사용 예시
+-레트로핏을 사용하여 서버로부터 응답을 받을 때 사용하는 일반적인 방법
+
+1. enqueue()
+-명시적으로 성공/실패가 나눠져 콜백으로 오며 그에 따른 동작 처리가 가능
+"Call" is useful when we are willing to use its enqueue callback function-Async
+-enqueue 를 사용하고 비동기처리를 따로 하지 않는 다면 콜백은 MainThread 에서 처리
+
+2. execute()
+-네트워크 작업을 동기적으로 처리하며 MainThread 에서 작업을 하면 에러가 발생
+"android.os.NetworkOnMainThreadException"
+-비동기 처리를 따로 해줘야하며 코루틴으로 비동기 처리를 한 경우 네트워크 결과를 코루틴 블럭 내부에서 반환 받을 수 있음
+*/
 class GitRetrofitClient {
     object GitRetrofitClient {
         val retrofit: GitApiService by lazy {
@@ -22,47 +38,19 @@ class GitRetrofitClient {
         }
     }
 
-    //깃서버 유저 조회
-    //반환 값은 따로 없으며 단순하게 결과를 로그로 찍음
-    fun getUsersAsync() {
+    //enqueue() example
+    fun getUsers_enqueue() {
         try {
             GitRetrofitClient
                 .retrofit
                 .getUsers()
                 .enqueue(object : Callback<Repository> {
+                    //서버 응답 받은 경우
                     override fun onResponse(call: Call<Repository>, response: Response<Repository>) {
-                        //200 Response : 성공적인 응답
-                        if (response.isSuccessful) {
-                            val responseBody = response.body() as Repository
-
-                            Log.d(TAG, "code 200 Response\n" +
-                                    "[ headers : ${response.headers()} ]\n" +
-                                    "[ body : $responseBody ]\n" +
-                                    "[ raw :  ${response.raw()}]")
-                            // 리사이클러뷰와 사용 예시
-                            // adapter.userList = response.body() as Repository
-                            // adapter.notifyDataSetChanged()
-                        }
-                        //400 Response : 예외 응답
-                        else {
-                            if (response.errorBody() != null) {
-                                //errorBody 를 Json 타입으로 캐스팅한 후, ErrorResponse 데이터 클래스에 넣은 방법.
-                                //더 좋은 방법이 있을 수 있음
-                                val errorBodyJsonObj = JSONObject(response.errorBody()!!.string())
-                                val responseBody = ErrorResponse(
-                                    message = errorBodyJsonObj["message"].toString(),
-                                    documentationUrl = errorBodyJsonObj["documentation_url"].toString()
-                                )
-                                Log.d(TAG, "code 400 Response\n" +
-                                        "[ headers : ${response.headers()} ]\n" +
-                                        "[ body : $responseBody ]\n" +
-                                        "[ raw :  ${response.raw()}]")
-                            }
-                        }
+                        showResponseDetail(response)
                     }
                     //서버 응답이 없는 경우
                     override fun onFailure(call: Call<Repository>, t: Throwable) {
-                        Log.e(TAG, "onFailure : $t")
                         t.printStackTrace()
                     }
                 })
@@ -71,25 +59,25 @@ class GitRetrofitClient {
         }
     }
 
-    fun getUsersSync(): Any? {
+    //execute() example
+    fun getUsers_execute(): Any? {
         try {
-            val result = GitRetrofitClient
+            val response = GitRetrofitClient
                 .retrofit
                 .getUsers()
                 .execute()
 
-            return when(result.code()) {
+            showResponseDetail(response)
+
+            return when(response.code()) {
                 200 -> {
-                    Log.d(TAG, "200 response ")
-                    result.body()
+                    response.body()
                 }
                 400 -> {
-                    Log.e(TAG, "400 response ")
-                    result.errorBody()
+                    response.errorBody()
                 }
                 else -> {
-                    Log.e(TAG, "Exception response ")
-                    result.message()
+                    response.message()
                 }
             }
         } catch (e: Exception) {

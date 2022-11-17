@@ -44,7 +44,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="30dp"
-            android:onClick="@{()->mainActivity.testButton1()}"
+            android:onClick="@{()->mainActivity.callExample()}"
             android:text="testButton_1"
             android:textSize="18sp" />
 
