@@ -108,6 +108,9 @@ to provide asynchronous execution, we don't need enqueue callback. We could just
 
 ><a id = "ref">**참고링크**</a></br>
 
+Retrofit 전체 Response 받기</br>
+https://th-biglight.tistory.com/11</br>
+
 안드로이드 - 레트로핏 errorBody() 파싱하기</br>
 https://salix97.tistory.com/237</br>
 
