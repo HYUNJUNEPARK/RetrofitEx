@@ -5,7 +5,6 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.example.networkretrofit.Util.TAG
-import com.example.networkretrofit.Util.showCurrentThread
 import com.example.networkretrofit.databinding.ActivityMainBinding
 import com.example.networkretrofit.model.server.ErrorResponse
 import com.example.networkretrofit.model.server.SearchUserResponse
@@ -35,18 +34,33 @@ class MainActivity : AppCompatActivity() {
 
     //Call
     fun callExample() {
-        //enqueue()
-        //gitRetrofitClient.getUsers_enqueue()
+        //enqueue() Ex
+        gitRetrofitClient.getUsersEnqueueEx()
 
-        //execute()
+        //execute() Ex
         CoroutineScope(Dispatchers.IO).launch {
-            gitRetrofitClient.getUsers_execute().let {
-                Log.d(TAG, "getUsers_execute(): $it")
+            gitRetrofitClient.getUsersExecuteEx().let {
+                Log.d(TAG, "getUsersExecuteEx(): $it")
             }
         }
 
 
+//아래부터 실제 동작 하지 않은 코드
+        //@QueryMap Ex
+        CoroutineScope(Dispatchers.IO).launch {
+            gitRetrofitClient.getUsersQueryMapEx(
+                param1 = "10",
+                param2 = "96"
+            ).let {
+                Log.d(TAG, "getUsersQueryMapEx(): $it")
+            }
+        }
     }
+
+
+
+
+
 
 
 

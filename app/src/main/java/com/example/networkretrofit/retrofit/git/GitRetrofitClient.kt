@@ -1,7 +1,10 @@
 package com.example.networkretrofit.retrofit.git
 
-import com.example.networkretrofit.Util.showResponseDetail
+import com.example.networkretrofit.Util.showResponseDataClassDetail
+import com.example.networkretrofit.Util.showResponseObjectDetail
 import com.example.networkretrofit.model.git.Repository
+import com.google.gson.Gson
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -45,8 +48,8 @@ class GitRetrofitClient {
         }
     }
 
-    //enqueue() example
-    fun getUsers_enqueue() {
+    //Call<DataClass> enqueue()Ex
+    fun getUsersEnqueueEx() {
         try {
             GitRetrofitClient
                 .retrofit
@@ -54,7 +57,7 @@ class GitRetrofitClient {
                 .enqueue(object : Callback<Repository> {
                     //서버 응답 받은 경우
                     override fun onResponse(call: Call<Repository>, response: Response<Repository>) {
-                        showResponseDetail(response)
+                        showResponseDataClassDetail(response)
                     }
                     //서버 응답이 없는 경우
                     override fun onFailure(call: Call<Repository>, t: Throwable) {
@@ -66,15 +69,15 @@ class GitRetrofitClient {
         }
     }
 
-    //execute() example
-    fun getUsers_execute(): Any? {
+    //Call<DataClass> execute()Ex
+    fun getUsersExecuteEx(): Any? {
         try {
             val response = GitRetrofitClient
                 .retrofit
                 .getUsersCallEx()
                 .execute()
 
-            showResponseDetail(response)
+            showResponseDataClassDetail(response)
 
             return when(response.code()) {
                 200 -> {
@@ -92,6 +95,53 @@ class GitRetrofitClient {
         }
         return null
     }
+
+    //Call<Object> QueryMapEx
+    fun getUsersQueryMapEx(param1: String, param2: String): JSONObject? {
+        try {
+            val query: MutableMap<String, String> = HashMap()
+            query["userId"] = param1
+            query["id"] = param2
+
+            val response = GitRetrofitClient
+                .retrofit
+                .getUsersQueryMapEx(query)
+                .execute()
+
+            showResponseObjectDetail(response)
+
+            when(response.code()) {
+                200 -> {
+                    if (response.body() != null) {
+                        val data = Gson().toJson(response.body())
+                        return JSONObject(data)
+                    }
+                    return null
+                }
+                400 -> {
+                    if (response.errorBody() != null) {
+                        return JSONObject(response.errorBody()!!.string())
+                    }
+                    return null
+                }
+                else -> {
+                    return null
+                }
+            }
+            return null
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return null
+    }
+
+
+
+
+
+
+
+
 
 
     //TODO Add Response Description

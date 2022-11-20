@@ -7,13 +7,22 @@ import retrofit2.Response
 object Util {
     const val TAG = "testLog"
 
-    fun showResponseDetail(response: Response<Repository>) {
+    fun showResponseDataClassDetail(response: Response<Repository>) {
         Log.d(TAG, "Response\n" +
                 "[\nheaders : ${response.headers()}]\n" +
                 "[ body : ${response.body()} ]\n" +
                 "[ errorBody : ${response.errorBody()?.string()} ]\n" +
                 "[ raw :  ${response.raw()}]")
     }
+
+    fun showResponseObjectDetail(response: Response<Object>) {
+        Log.d(TAG, "Response\n" +
+                "[\nheaders : ${response.headers()}]\n" +
+                "[ body : ${response.body()} ]\n" +
+                "[ errorBody : ${response.errorBody().toString()} ]\n" +
+                "[ raw :  ${response.raw()}]")
+    }
+
 
     fun showCurrentThread() {
         Log.d(TAG, "Thread: ${Thread.currentThread().name}")
