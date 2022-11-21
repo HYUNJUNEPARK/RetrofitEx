@@ -35,26 +35,32 @@ class MainActivity : AppCompatActivity() {
     //Call
     fun callExample() {
         //enqueue() Ex
-        gitRetrofitClient.getUsersEnqueueEx()
+//        gitRetrofitClient.getUsersEnqueueEx()
 
         //execute() Ex
+//        CoroutineScope(Dispatchers.IO).launch {
+//            gitRetrofitClient.getUsersExecuteEx().let {
+//                Log.d(TAG, "getUsersExecuteEx(): $it")
+//            }
+//        }
+
         CoroutineScope(Dispatchers.IO).launch {
-            gitRetrofitClient.getUsersExecuteEx().let {
-                Log.d(TAG, "getUsersExecuteEx(): $it")
+            gitRetrofitClient.getUsersCallAnyEx().let {
+                Log.d(TAG, "getUsersCallAnyEx(): $it")
             }
         }
 
 
 //아래부터 실제 동작 하지 않은 코드
         //@QueryMap Ex
-        CoroutineScope(Dispatchers.IO).launch {
-            gitRetrofitClient.getUsersQueryMapEx(
-                param1 = "10",
-                param2 = "96"
-            ).let {
-                Log.d(TAG, "getUsersQueryMapEx(): $it")
-            }
-        }
+//        CoroutineScope(Dispatchers.IO).launch {
+//            gitRetrofitClient.getUsersQueryMapEx(
+//                param1 = "10",
+//                param2 = "96"
+//            ).let {
+//                Log.d(TAG, "getUsersQueryMapEx(): $it")
+//            }
+//        }
     }
 
 

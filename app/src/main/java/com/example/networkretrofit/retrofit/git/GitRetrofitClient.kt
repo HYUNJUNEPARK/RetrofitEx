@@ -1,7 +1,7 @@
 package com.example.networkretrofit.retrofit.git
 
 import com.example.networkretrofit.Util.showResponseDataClassDetail
-import com.example.networkretrofit.Util.showResponseObjectDetail
+import com.example.networkretrofit.Util.showResponseAnyDetail
 import com.example.networkretrofit.model.git.Repository
 import com.google.gson.Gson
 import org.json.JSONObject
@@ -96,6 +96,48 @@ class GitRetrofitClient {
         return null
     }
 
+    //Call<Any> execute()Ex
+    fun getUsersCallAnyEx(): String? {
+        try {
+            val response = GitRetrofitClient
+                .retrofit
+                .getUsersCallAnyEx()
+                .execute()
+
+            return showResponse(response)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return null
+    }
+
+    //Response 의 상세 정보를 로그로 보여주고 body/errorBody 를 JSONObject String 으로 반환
+    private fun showResponse(response: Response<Any>): String? {
+        try {
+            showResponseAnyDetail(response)
+
+            return when(response.code()) {
+                200 -> {
+                    //Any -> JSONObject String
+                    Gson().toJson(response.body())
+                    //JSONObject String - > JSONObject
+                    //JSONObject(Gson().toJson(response.body()))
+                }
+                400 -> {
+                    //Any -> JSONObject String
+                    Gson().toJson(response.errorBody())
+                }
+                else -> {
+                    response.message()
+                }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return null
+    }
+
+
     //Call<Object> QueryMapEx
     fun getUsersQueryMapEx(param1: String, param2: String): JSONObject? {
         try {
@@ -108,7 +150,7 @@ class GitRetrofitClient {
                 .getUsersQueryMapEx(query)
                 .execute()
 
-            showResponseObjectDetail(response)
+            //showResponseObjectDetail(response)
 
             when(response.code()) {
                 200 -> {
@@ -128,7 +170,6 @@ class GitRetrofitClient {
                     return null
                 }
             }
-            return null
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -139,15 +180,45 @@ class GitRetrofitClient {
 
 
 
+//    //TODO Add Response Description
+//    sealed class Result<out T: Any> {
+//        data class Success<out T : Any>(val body: T) : Result<T>()
+//        data class Error<out T : Any>(val body: T): Result<T>()
+//        data class Exception(val exception: String): Result<Nothing>()
+//    }
 
-
-
-
-
-    //TODO Add Response Description
-    sealed class Result<out T: Any> {
-        data class Success<out T : Any>(val body: T) : Result<T>()
-        data class Error<out T : Any>(val body: T): Result<T>()
-        data class Exception(val exception: String): Result<Nothing>()
-    }
+//    private fun handleExceptionResponse(response: Response<Object>): String {
+//        if (response.code() != null) {
+//            //data class -> json string
+//            //TODO 더 좋은 코드가 있을것 같음
+//            val message = if (response.errorBody() != null) {
+//                response.errorBody()!!.string()
+//            } else if (response.body() != null) {
+//                response.body().toString()
+//            } else {
+//                UNKNOWN_ERROR_MESSAGE
+//            }
+//
+//            return Gson().toJson(
+//                ServerResponse(
+//                    ExecStatus(
+//                        code = response.code().toString(),
+//                        message = message
+//                    )
+//                )
+//            )
+//        }
+//        return handleExceptionResponse(UNKNOWN_ERROR_MESSAGE)
+//    }
+//
+//    private fun handleExceptionResponse(message: String): String{
+//        return Gson().toJson(
+//            ServerResponse(
+//                ExecStatus(
+//                    code = CODE_ERROR,
+//                    message = message
+//                )
+//            )
+//        )
+//    }
 }

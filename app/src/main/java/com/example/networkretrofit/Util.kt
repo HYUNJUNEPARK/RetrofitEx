@@ -15,7 +15,7 @@ object Util {
                 "[ raw :  ${response.raw()}]")
     }
 
-    fun showResponseObjectDetail(response: Response<Object>) {
+    fun showResponseAnyDetail(response: Response<Any>) {
         Log.d(TAG, "Response\n" +
                 "[\nheaders : ${response.headers()}]\n" +
                 "[ body : ${response.body()} ]\n" +

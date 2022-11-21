@@ -17,11 +17,11 @@ interface GitApiService {
     //-@Field : 인자를 form-urlencoded 방식으로 전송
     //-@FieldMap : @QueryMap 처럼 @Field 를 Map 으로 한번에 전송할 때 사용
 
-    //TODO https://jaejong.tistory.com/38
-
-    //@PUT : Update, @POST 와 같이 Body 에 데이터를 담아서 전송
+    //@PUT : Update, 서버 내 데이터를 수정하는 역할로 새로 생성하는 개념이 아니라 수정하는 의미
+    //-@POST 와 마찬가지로 @Body/@Field/@FieldMap 으로 데이터 전송. 다른 점은 변경할 데이터를 선택해야 함
 
     //@DELETE : 데이터 삭제
+    //-반환되는 DTO 데이터는 없으며, 삭제 성공 시 응답코드 200 응답
 
     //@Headers : 서버에서 지정한 권한을 넣을 때 사용
 
@@ -31,7 +31,7 @@ interface GitApiService {
 
     //Call<Object> Ex
     @GET("users/Kotlin/repos")
-    fun getUsersCallObjectEx(): Call<Object>
+    fun getUsersCallAnyEx(): Call<Any>
 
     //Response<DataClass> Ex
     @GET("users/Kotlin/repos")

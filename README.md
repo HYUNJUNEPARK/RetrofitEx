@@ -111,6 +111,9 @@ to provide asynchronous execution, we don't need enqueue callback. We could just
 Retrofit 전체 Response 받기</br>
 https://th-biglight.tistory.com/11</br>
 
+Retrofit2 기본 사용법2 -'GET/POST/PUT/DELETE'</br>
+https://jaejong.tistory.com/38</br>
+
 안드로이드 - 레트로핏 errorBody() 파싱하기</br>
 https://salix97.tistory.com/237</br>
 
