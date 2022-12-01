@@ -1,11 +1,12 @@
 package com.example.networkretrofit
 
 import android.util.Log
-import com.example.networkretrofit.model.git.Repository
+import com.example.networkretrofit.model.Repository
 import retrofit2.Response
 
 object Util {
     const val TAG = "testLog"
+
     const val BASE_URL = "https://api.github.com/"
 
     fun showResponseDataClassDetail(response: Response<Repository>) {

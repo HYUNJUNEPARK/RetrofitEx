@@ -1,9 +1,9 @@
-package com.example.networkretrofit.retrofit.git
+package com.example.networkretrofit.retrofit
 
 import com.example.networkretrofit.Util.BASE_URL
 import com.example.networkretrofit.Util.showResponseDataClassDetail
 import com.example.networkretrofit.Util.showResponseAnyDetail
-import com.example.networkretrofit.model.git.Repository
+import com.example.networkretrofit.model.Repository
 import com.google.gson.Gson
 import org.json.JSONObject
 import retrofit2.Call
@@ -52,8 +52,7 @@ class GitRetrofitClient {
     //Call<DataClass> enqueue()Ex
     fun getUsersEnqueueEx() {
         try {
-            GitRetrofitClient
-                .retrofit
+            GitRetrofitClient.retrofit
                 .getUsersCallEx()
                 .enqueue(object : Callback<Repository> {
                     //서버 응답 받은 경우
@@ -73,8 +72,7 @@ class GitRetrofitClient {
     //Call<DataClass> execute()Ex
     fun getUsersExecuteEx(): Any? {
         try {
-            val response = GitRetrofitClient
-                .retrofit
+            val response = GitRetrofitClient.retrofit
                 .getUsersCallEx()
                 .execute()
 
@@ -100,8 +98,7 @@ class GitRetrofitClient {
     //Call<Any> execute()Ex
     fun getUsersCallAnyEx(): String? {
         try {
-            val response = GitRetrofitClient
-                .retrofit
+            val response = GitRetrofitClient.retrofit
                 .getUsersCallAnyEx()
                 .execute()
 
@@ -146,8 +143,7 @@ class GitRetrofitClient {
             query["userId"] = param1
             query["id"] = param2
 
-            val response = GitRetrofitClient
-                .retrofit
+            val response = GitRetrofitClient.retrofit
                 .getUsersQueryMapEx(query)
                 .execute()
 

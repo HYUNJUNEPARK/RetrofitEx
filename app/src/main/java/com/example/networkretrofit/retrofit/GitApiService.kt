@@ -1,6 +1,6 @@
-package com.example.networkretrofit.retrofit.git
+package com.example.networkretrofit.retrofit
 
-import com.example.networkretrofit.model.git.Repository
+import com.example.networkretrofit.model.Repository
 import com.example.networkretrofit.model.server.RegisterUser
 import retrofit2.Call
 import retrofit2.Response

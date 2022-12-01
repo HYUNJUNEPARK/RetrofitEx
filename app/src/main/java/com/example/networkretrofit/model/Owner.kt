@@ -1,4 +1,4 @@
-package com.example.networkretrofit.model.git
+package com.example.networkretrofit.model
 
 data class Owner(
     val avatar_url: String,

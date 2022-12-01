@@ -1,3 +1,3 @@
-package com.example.networkretrofit.model.git
+package com.example.networkretrofit.model
 
 class Repository : ArrayList<RepositoryItem>()

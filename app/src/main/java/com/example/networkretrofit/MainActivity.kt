@@ -24,7 +24,6 @@ class MainActivity : AppCompatActivity() {
     fun testButton() {
         CoroutineScope(Dispatchers.IO).launch {
 
-
         }
     }
 }
