@@ -1,12 +1,12 @@
-package com.example.networkretrofit.retrofit
+package com.example.networkretrofit.network.retrofit
 
-import com.example.networkretrofit.model.Repository
-import com.example.networkretrofit.model.server.RegisterUser
+import com.example.networkretrofit.network.model.Repository
+import com.example.networkretrofit.deprecated.server.RegisterUser
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.*
 
-interface GitApiService {
+interface Service {
     //@GET : Read, 정보 조회용도, @Body 를 사용하지 않으며 URL 에 쿼리스트링을 포함해 모든 정보 표현
     //-@Path : 동적 URI 을 생성할 때 사용
     //-@Query : URI 에 쿼리스트링을 추가할 때 사용
@@ -25,20 +25,27 @@ interface GitApiService {
 
     //@Headers : 서버에서 지정한 권한을 넣을 때 사용
 
-    //Call<DataClass> Ex
-    @GET("users/Kotlin/repos")
-    fun getUsersCallEx(): Call<Repository>
+/*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
 
-    //Call<Object> Ex
+    //Call<DataClass> Ex : enqueue()
     @GET("users/Kotlin/repos")
-    fun getUsersCallAnyEx(): Call<Any>
+    fun getUsersCallDataClass(): Call<Repository>
+
+    //Call<Object> Ex : execute()
+    @GET("users/Kotlin/repos")
+    fun getUsersCallAny(): Call<Any>
+
+
+
+
+/*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
+
 
     //Response<DataClass> Ex
     @GET("users/Kotlin/repos")
     suspend fun getUsersResponseEx(): Response<Repository>
 
-
-//그 외 인터페이스 샘플
+//
     //@GET, @Query Ex
     //"BaseURL/api/users?user_id=userId"
     @GET("api/users")

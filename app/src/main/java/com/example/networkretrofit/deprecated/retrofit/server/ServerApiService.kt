@@ -1,8 +1,8 @@
-package com.example.networkretrofit.retrofit.server
+package com.example.networkretrofit.deprecated.retrofit.server
 
-import com.example.networkretrofit.model.server.RegisterUser
-import com.example.networkretrofit.model.server.RegisterUserResponse
-import com.example.networkretrofit.model.server.SearchUserResponse
+import com.example.networkretrofit.deprecated.server.RegisterUser
+import com.example.networkretrofit.deprecated.server.RegisterUserResponse
+import com.example.networkretrofit.deprecated.server.SearchUserResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET

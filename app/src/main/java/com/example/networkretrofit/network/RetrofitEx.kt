@@ -1,16 +1,15 @@
-package com.example.networkretrofit.retrofit
+package com.example.networkretrofit.network
 
-import com.example.networkretrofit.Util.BASE_URL
-import com.example.networkretrofit.Util.showResponseDataClassDetail
-import com.example.networkretrofit.Util.showResponseAnyDetail
-import com.example.networkretrofit.model.Repository
+import com.example.networkretrofit.Util
+import com.example.networkretrofit.network.model.Repository
+import com.example.networkretrofit.network.retrofit.Client
 import com.google.gson.Gson
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+
+
 
 
 /*
@@ -36,30 +35,24 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 4. Retrofit 라이브러리 단점 보안 : Object 를 사용한 전체 JSONObject 반환
 -
-
 */
-class GitRetrofitClient {
-    object GitRetrofitClient {
-        val retrofit: GitApiService by lazy {
-            Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-                .create(GitApiService::class.java)
-        }
-    }
 
-    //Call<DataClass> enqueue()Ex
-    fun getUsersEnqueueEx() {
+
+class RetrofitEx {
+    /**
+     * 깃허브 유저 목록을 가져온다.
+     * enqueue() 로 명시적으로 성공/실패가 나눠져 응답이 콜백으로 오며 동작 처리가 가능하다.
+     * 비동기처리를 따로 하지 않는 다면 콜백을 MainThread 에서 처리한다.
+     * "Call" is useful when we are willing to use its enqueue callback function-Async
+     */
+    fun getUsersCallDataClass() {
         try {
-            GitRetrofitClient.retrofit
-                .getUsersCallEx()
+            Client.RetrofitClient.retrofit
+                .getUsersCallDataClass()
                 .enqueue(object : Callback<Repository> {
-                    //서버 응답 받은 경우
                     override fun onResponse(call: Call<Repository>, response: Response<Repository>) {
-                        showResponseDataClassDetail(response)
+                        Util.showResponseDataClassDetail(response)
                     }
-                    //서버 응답이 없는 경우
                     override fun onFailure(call: Call<Repository>, t: Throwable) {
                         t.printStackTrace()
                     }
@@ -69,14 +62,15 @@ class GitRetrofitClient {
         }
     }
 
-    //Call<DataClass> execute()Ex
+
+
     fun getUsersExecuteEx(): Any? {
         try {
-            val response = GitRetrofitClient.retrofit
-                .getUsersCallEx()
+            val response = Client.RetrofitClient.retrofit
+                .getUsersCallDataClass()
                 .execute()
 
-            showResponseDataClassDetail(response)
+            Util.showResponseDataClassDetail(response)
 
             return when(response.code()) {
                 200 -> {
@@ -95,24 +89,36 @@ class GitRetrofitClient {
         return null
     }
 
-    //Call<Any> execute()Ex
-    fun getUsersCallAnyEx(): String? {
+    //execute()
+    fun getUsersCallAny(): String? {
         try {
-            val response = GitRetrofitClient.retrofit
-                .getUsersCallAnyEx()
+            val response = Client.RetrofitClient.retrofit
+                .getUsersCallAny()
                 .execute()
+
+//            return when(response.code()) {
+//                200 -> {
+//                    response.body()
+//                }
+//                400 -> {
+//                    response.errorBody()
+//                }
+//                else -> {
+//                    response.message()
+//                }
+//            }
 
             return showResponse(response)
         } catch (e: Exception) {
             e.printStackTrace()
+            return e.message.toString()
         }
-        return null
     }
 
     //Response 의 상세 정보를 로그로 보여주고 body/errorBody 를 JSONObject String 으로 반환
     private fun showResponse(response: Response<Any>): String? {
         try {
-            showResponseAnyDetail(response)
+            Util.showResponseAnyDetail(response)
 
             return when(response.code()) {
                 200 -> {
@@ -143,7 +149,7 @@ class GitRetrofitClient {
             query["userId"] = param1
             query["id"] = param2
 
-            val response = GitRetrofitClient.retrofit
+            val response = Client.RetrofitClient.retrofit
                 .getUsersQueryMapEx(query)
                 .execute()
 

@@ -1,7 +1,7 @@
 package com.example.networkretrofit
 
 import android.util.Log
-import com.example.networkretrofit.model.Repository
+import com.example.networkretrofit.network.model.Repository
 import retrofit2.Response
 
 object Util {

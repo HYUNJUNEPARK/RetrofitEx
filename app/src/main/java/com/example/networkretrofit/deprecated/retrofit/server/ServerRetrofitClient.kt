@@ -1,11 +1,11 @@
-package com.example.networkretrofit.retrofit.server
+package com.example.networkretrofit.deprecated.retrofit.server
 
 import android.util.Log
 import com.example.networkretrofit.Util.TAG
-import com.example.networkretrofit.model.server.ErrorResponse
-import com.example.networkretrofit.model.server.RegisterUser
-import com.example.networkretrofit.model.server.RegisterUserResponse
-import com.example.networkretrofit.model.server.SearchUserResponse
+import com.example.networkretrofit.deprecated.server.ErrorResponse
+import com.example.networkretrofit.deprecated.server.RegisterUser
+import com.example.networkretrofit.deprecated.server.RegisterUserResponse
+import com.example.networkretrofit.deprecated.server.SearchUserResponse
 import org.json.JSONObject
 import retrofit2.Response
 import retrofit2.Retrofit

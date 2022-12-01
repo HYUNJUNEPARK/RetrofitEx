@@ -1,4 +1,4 @@
-package com.example.networkretrofit.model.server
+package com.example.networkretrofit.deprecated.server
 
 
 import com.google.gson.annotations.SerializedName
