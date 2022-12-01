@@ -1,16 +1,12 @@
 package com.example.networkretrofit.network
 
-import com.example.networkretrofit.Util
-import com.example.networkretrofit.network.model.Repository
+import com.example.networkretrofit.network.model.response.Repository
 import com.example.networkretrofit.network.retrofit.Client
 import com.google.gson.Gson
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-
-
-
 
 /*
 1. Retrofit 라이브러리
@@ -35,23 +31,26 @@ import retrofit2.Response
 
 4. Retrofit 라이브러리 단점 보안 : Object 를 사용한 전체 JSONObject 반환
 -
+
 */
 
 
 class RetrofitEx {
+    val responseUtil = ResponseUtil()
+
     /**
-     * 깃허브 유저 목록을 가져온다.
+     * 깃허브 유저 데이터를 가져온다.
      * enqueue() 로 명시적으로 성공/실패가 나눠져 응답이 콜백으로 오며 동작 처리가 가능하다.
      * 비동기처리를 따로 하지 않는 다면 콜백을 MainThread 에서 처리한다.
      * "Call" is useful when we are willing to use its enqueue callback function-Async
      */
-    fun getUsersCallDataClass() {
+    fun getUsersCallDataClassEnqueue() {
         try {
             Client.RetrofitClient.retrofit
                 .getUsersCallDataClass()
                 .enqueue(object : Callback<Repository> {
                     override fun onResponse(call: Call<Repository>, response: Response<Repository>) {
-                        Util.showResponseDataClassDetail(response)
+                        responseUtil.showResponse(response)
                     }
                     override fun onFailure(call: Call<Repository>, t: Throwable) {
                         t.printStackTrace()
@@ -62,85 +61,24 @@ class RetrofitEx {
         }
     }
 
-
-
-    fun getUsersExecuteEx(): Any? {
-        try {
-            val response = Client.RetrofitClient.retrofit
-                .getUsersCallDataClass()
-                .execute()
-
-            Util.showResponseDataClassDetail(response)
-
-            return when(response.code()) {
-                200 -> {
-                    response.body()
-                }
-                400 -> {
-                    response.errorBody()
-                }
-                else -> {
-                    response.message()
-                }
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-        return null
-    }
-
-    //execute()
-    fun getUsersCallAny(): String? {
+    /**
+     * 깃허브 유저 데이터를 가져온다.
+     * execute() 로 응답 코드별로 데이터를 처리할 수 있으며 비동기 처리를 따로 해줘야하기 때문에
+     * 코루틴으로 비동기 처리를 한 경우 네트워크 결과를 코루틴 블럭 내부에서 반환 받을 수 있다.
+     * 네트워크 작업을 동기적으로 처리하기 때문에 MainThread 에서 작업을 하면 에러가 발생 "android.os.NetworkOnMainThreadException"
+     * @return 요청에 대한 서버 응답. JSON String
+     */
+    fun getUsersCallAnyExecute(): String {
         try {
             val response = Client.RetrofitClient.retrofit
                 .getUsersCallAny()
                 .execute()
-
-//            return when(response.code()) {
-//                200 -> {
-//                    response.body()
-//                }
-//                400 -> {
-//                    response.errorBody()
-//                }
-//                else -> {
-//                    response.message()
-//                }
-//            }
-
-            return showResponse(response)
+            return responseUtil.showResponse(response)
         } catch (e: Exception) {
             e.printStackTrace()
-            return e.message.toString()
+            return responseUtil.handleExceptionResponse(e.message.toString())
         }
     }
-
-    //Response 의 상세 정보를 로그로 보여주고 body/errorBody 를 JSONObject String 으로 반환
-    private fun showResponse(response: Response<Any>): String? {
-        try {
-            Util.showResponseAnyDetail(response)
-
-            return when(response.code()) {
-                200 -> {
-                    //Any -> JSONObject String
-                    Gson().toJson(response.body())
-                    //JSONObject String - > JSONObject
-                    //JSONObject(Gson().toJson(response.body()))
-                }
-                400 -> {
-                    //Any -> JSONObject String
-                    Gson().toJson(response.errorBody())
-                }
-                else -> {
-                    response.message()
-                }
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-        return null
-    }
-
 
     //Call<Object> QueryMapEx
     fun getUsersQueryMapEx(param1: String, param2: String): JSONObject? {
@@ -178,10 +116,6 @@ class RetrofitEx {
         }
         return null
     }
-
-
-
-
 
 //    //TODO Add Response Description
 //    sealed class Result<out T: Any> {

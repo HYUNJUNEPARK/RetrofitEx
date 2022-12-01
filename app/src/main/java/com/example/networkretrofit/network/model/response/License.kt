@@ -1,4 +1,4 @@
-package com.example.networkretrofit.network.model
+package com.example.networkretrofit.network.model.response
 
 data class License(
     val key: String,

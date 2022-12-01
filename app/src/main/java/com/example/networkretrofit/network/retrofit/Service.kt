@@ -1,6 +1,6 @@
 package com.example.networkretrofit.network.retrofit
 
-import com.example.networkretrofit.network.model.Repository
+import com.example.networkretrofit.network.model.response.Repository
 import com.example.networkretrofit.deprecated.server.RegisterUser
 import retrofit2.Call
 import retrofit2.Response
@@ -25,8 +25,7 @@ interface Service {
 
     //@Headers : 서버에서 지정한 권한을 넣을 때 사용
 
-/*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
-
+/*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
     //Call<DataClass> Ex : enqueue()
     @GET("users/Kotlin/repos")
     fun getUsersCallDataClass(): Call<Repository>
@@ -38,7 +37,11 @@ interface Service {
 
 
 
-/*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
+
+
+
+
+/*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
 
 
     //Response<DataClass> Ex

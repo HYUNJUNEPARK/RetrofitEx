@@ -1,35 +1,37 @@
 package com.example.networkretrofit
 
 import android.util.Log
-import com.example.networkretrofit.network.model.Repository
+import com.example.networkretrofit.network.model.response.Repository
 import retrofit2.Response
 
-object Util {
-    const val TAG = "testLog"
-
-    const val BASE_URL = "https://api.github.com/"
+object Constants {
+    const val APP_TAG = "testLog"
 
     fun showResponseDataClassDetail(response: Response<Repository>) {
-        Log.d(TAG, "Response\n" +
+        Log.d(APP_TAG,
+            "Response\n" +
                 "[\nheaders : ${response.headers()}]\n" +
                 "[ body : ${response.body()} ]\n" +
                 "[ errorBody : ${response.errorBody()?.string()} ]\n" +
-                "[ raw :  ${response.raw()}]")
+                "[ raw :  ${response.raw()}]"
+        )
     }
 
     fun showResponseAnyDetail(response: Response<Any>) {
-        Log.d(TAG, "Response\n" +
+        Log.d(APP_TAG,
+            "Response\n" +
                 "[\nheaders : ${response.headers()}]\n" +
                 "[ body : ${response.body()} ]\n" +
                 "[ errorBody : ${response.errorBody().toString()} ]\n" +
-                "[ raw :  ${response.raw()}]")
+                "[ raw :  ${response.raw()}]"
+        )
     }
 
     fun showCurrentThread() {
-        Log.d(TAG, "Thread: ${Thread.currentThread().name}")
+        Log.d(APP_TAG, "Thread: ${Thread.currentThread().name}")
     }
 
     fun showCurrentThread(position: String) {
-        Log.d(TAG, "$position Thread: ${Thread.currentThread().name}")
+        Log.d(APP_TAG, "$position Thread: ${Thread.currentThread().name}")
     }
 }

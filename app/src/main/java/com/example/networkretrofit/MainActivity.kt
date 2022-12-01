@@ -1,8 +1,10 @@
 package com.example.networkretrofit
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import com.example.networkretrofit.Constants.APP_TAG
 import com.example.networkretrofit.databinding.ActivityMainBinding
 import com.example.networkretrofit.network.RetrofitEx
 import kotlinx.coroutines.CoroutineScope
@@ -29,6 +31,12 @@ class MainActivity : AppCompatActivity() {
 
     fun testButton() {
         CoroutineScope(Dispatchers.IO).launch {
+            //retrofitEx.getUsersCallDataClassEnqueue()
+
+            retrofitEx.getUsersCallAnyExecute().let {
+                Log.d(APP_TAG, "getUsersCallAny(): $it")
+            }
+
 
         }
     }

@@ -1,7 +1,7 @@
 package com.example.networkretrofit.deprecated.retrofit.server
 
 import android.util.Log
-import com.example.networkretrofit.Util.TAG
+import com.example.networkretrofit.Constants.APP_TAG
 import com.example.networkretrofit.deprecated.server.ErrorResponse
 import com.example.networkretrofit.deprecated.server.RegisterUser
 import com.example.networkretrofit.deprecated.server.RegisterUserResponse
@@ -87,7 +87,7 @@ class ServerRetrofitClient{
             when(response.code()) {
                 //200 Response : 성공적인 응답
                 200 -> {
-                    Log.d(TAG,"200 Response\n" +
+                    Log.d(APP_TAG,"200 Response\n" +
                             "[ headers : ${response.headers()} ]\n" +
                             "[ body :  ${response.body()} ]\n" +
                             "[ raw : ${response.raw()} ]")
@@ -103,7 +103,7 @@ class ServerRetrofitClient{
                         message = errorBodyJsonObj["message"].toString(),
                         errorCode = errorBodyJsonObj["error_code"].toString()
                     )
-                    Log.d(TAG,"200 Response\n" +
+                    Log.d(APP_TAG,"200 Response\n" +
                             "[ headers : ${response.headers()}]\n" +
                             "[ errorBody :  $errorResponse ]\n" +
                             "[ raw : ${response.raw()} ]")
