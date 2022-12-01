@@ -6,14 +6,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.example.networkretrofit.Constants.APP_TAG
 import com.example.networkretrofit.databinding.ActivityMainBinding
-import com.example.networkretrofit.network.RetrofitEx
+import com.example.networkretrofit.network.RetrofitCallEx
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    private lateinit var retrofitEx: RetrofitEx
+    private lateinit var retrofitCallEx: RetrofitCallEx
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity() {
             binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
             binding.mainActivity = this
 
-            retrofitEx = RetrofitEx()
+            retrofitCallEx = RetrofitCallEx()
 
         } catch(e: Exception) {
             e.printStackTrace()
@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity() {
         CoroutineScope(Dispatchers.IO).launch {
             //retrofitEx.getUsersCallDataClassEnqueue()
 
-            retrofitEx.getUsersCallAnyExecute().let {
+            retrofitCallEx.getUsersCallAnyExecute().let {
                 Log.d(APP_TAG, "getUsersCallAny(): $it")
             }
 

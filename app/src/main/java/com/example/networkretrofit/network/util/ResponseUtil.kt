@@ -1,10 +1,10 @@
-package com.example.networkretrofit.network
+package com.example.networkretrofit.network.util
 
 import android.util.Log
 import com.example.networkretrofit.Constants.APP_TAG
-import com.example.networkretrofit.network.NetworkConstants.ERROR_CODE
-import com.example.networkretrofit.network.NetworkConstants.EXCEPTION_BODY_EMPTY
-import com.example.networkretrofit.network.NetworkConstants.NETWORK_TAG
+import com.example.networkretrofit.network.util.NetworkConstants.ERROR_CODE
+import com.example.networkretrofit.network.util.NetworkConstants.EXCEPTION_BODY_EMPTY
+import com.example.networkretrofit.network.util.NetworkConstants.NETWORK_TAG
 import com.example.networkretrofit.network.model.exception.ResponseException
 import com.example.networkretrofit.network.model.response.Repository
 import com.google.gson.Gson

@@ -1,4 +1,4 @@
-package com.example.networkretrofit.network
+package com.example.networkretrofit.network.util
 
 object NetworkConstants {
     const val ERROR_CODE = "999"

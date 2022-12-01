@@ -1,6 +1,6 @@
 package com.example.networkretrofit.network.retrofit
 
-import com.example.networkretrofit.network.NetworkConstants.BASE_URL
+import com.example.networkretrofit.network.util.NetworkConstants.BASE_URL
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
