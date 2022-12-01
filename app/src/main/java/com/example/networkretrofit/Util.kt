@@ -6,6 +6,7 @@ import retrofit2.Response
 
 object Util {
     const val TAG = "testLog"
+    const val BASE_URL = "https://api.github.com/"
 
     fun showResponseDataClassDetail(response: Response<Repository>) {
         Log.d(TAG, "Response\n" +
@@ -22,7 +23,6 @@ object Util {
                 "[ errorBody : ${response.errorBody().toString()} ]\n" +
                 "[ raw :  ${response.raw()}]")
     }
-
 
     fun showCurrentThread() {
         Log.d(TAG, "Thread: ${Thread.currentThread().name}")

@@ -1,5 +1,6 @@
 package com.example.networkretrofit.retrofit.git
 
+import com.example.networkretrofit.Util.BASE_URL
 import com.example.networkretrofit.Util.showResponseDataClassDetail
 import com.example.networkretrofit.Util.showResponseAnyDetail
 import com.example.networkretrofit.model.git.Repository
@@ -41,7 +42,7 @@ class GitRetrofitClient {
     object GitRetrofitClient {
         val retrofit: GitApiService by lazy {
             Retrofit.Builder()
-                .baseUrl("https://api.github.com/")
+                .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
                 .create(GitApiService::class.java)

@@ -10,71 +10,21 @@
             type="com.example.networkretrofit.MainActivity" />
     </data>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
         android:orientation="vertical"
         tools:context=".MainActivity">
 
-        <LinearLayout
+        <Button
+            android:onClick="@{()->mainActivity.testButton()}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <EditText
-                android:id="@+id/editText1"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:background="@color/light_gray"
-                android:gravity="center"
-                android:hint="input1" />
-
-            <EditText
-                android:id="@+id/editText2"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:background="@color/light_gray"
-                android:gravity="center"
-                android:hint="input2" />
-        </LinearLayout>
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/testButton1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="30dp"
-            android:onClick="@{()->mainActivity.callExample()}"
-            android:text="testButton_1"
-            android:textSize="18sp" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/testButton2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="30dp"
-            android:onClick="@{()->mainActivity.testButton2()}"
-            android:text="testButton_2"
-            android:textSize="18sp" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/testButton3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="30dp"
-            android:onClick="@{()->mainActivity.testButton3()}"
-            android:text="testButton_3"
-            android:textSize="18sp" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/testButton4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="30dp"
-            android:onClick="@{()->mainActivity.testButton4()}"
-            android:text="testButton_4"
-            android:textSize="18sp" />
-
-
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
