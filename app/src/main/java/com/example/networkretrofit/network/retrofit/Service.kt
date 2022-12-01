@@ -8,7 +8,7 @@ import retrofit2.http.*
 
 interface Service {
 /*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
-//실제 동작하는 인터페이스
+//실제 동작하는 인터페이스 : Call
     @GET("users/Kotlin/repos")
     fun getUsersCallDataClass(): Call<Repository>
 
@@ -16,7 +16,14 @@ interface Service {
     fun getUsersCallAny(): Call<Any>
 
 /*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
+//실제 동작하는 인터페이스 : Response
+    @GET("users/Kotlin/repos")
+    fun getUsersResponseDataClass(): Response<Repository>
 
+    @GET("users/Kotlin/repos")
+    fun getUsersResponseAny(): Response<Any>
+
+/*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
 /*
 GET 관련 Annotation Example
 -@GET : Read, 정보 조회용도, @Body 를 사용하지 않으며 URL 에 쿼리스트링을 포함해 모든 정보 표현

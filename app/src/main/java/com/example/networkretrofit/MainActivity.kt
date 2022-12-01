@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import com.example.networkretrofit.Constants.APP_TAG
 import com.example.networkretrofit.databinding.ActivityMainBinding
 import com.example.networkretrofit.network.RetrofitCallEx
 import kotlinx.coroutines.CoroutineScope
@@ -31,13 +30,11 @@ class MainActivity : AppCompatActivity() {
 
     fun testButton() {
         CoroutineScope(Dispatchers.IO).launch {
-            //retrofitEx.getUsersCallDataClassEnqueue()
+//            retrofitCallEx.getUsersCallDataClassEnqueue()
 
-            retrofitCallEx.getUsersCallAnyExecute().let {
-                Log.d(APP_TAG, "getUsersCallAny(): $it")
-            }
-
-
+//            retrofitCallEx.getUsersCallAnyExecute().let {
+//                Log.d(APP_TAG, "getUsersCallAny(): $it")
+//            }
         }
     }
 }

@@ -1,12 +1,11 @@
 package com.example.networkretrofit.network.util
 
 import android.util.Log
-import com.example.networkretrofit.Constants.APP_TAG
+import com.example.networkretrofit.network.model.exception.ResponseException
+import com.example.networkretrofit.network.model.response.Repository
 import com.example.networkretrofit.network.util.NetworkConstants.ERROR_CODE
 import com.example.networkretrofit.network.util.NetworkConstants.EXCEPTION_BODY_EMPTY
 import com.example.networkretrofit.network.util.NetworkConstants.NETWORK_TAG
-import com.example.networkretrofit.network.model.exception.ResponseException
-import com.example.networkretrofit.network.model.response.Repository
 import com.google.gson.Gson
 import retrofit2.Response
 
@@ -34,7 +33,7 @@ class ResponseUtil {
 
     //response 코드에 따라 서버 응답을 JSON String 으로 반환한다.
     fun showResponse(response: Response<Any>): String {
-        Log.d(APP_TAG,
+        Log.d(NETWORK_TAG,
             "Response\n" +
                     "[\nheaders : ${response.headers()}]\n" +
                     "[ body : ${response.body()} ]\n" +
